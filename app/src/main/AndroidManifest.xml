@@ -1,0 +1,54 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    package="com.hust.bookflow">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name="com.hust.bookflow.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/jb_ico"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="nosensor"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/AppTheme_NOTransluce"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:name=".activity.SearchActivity"
+            android:screenOrientation="nosensor"
+            />
+        <activity
+            android:name=".activity.MovieDetailsActivity"
+            android:screenOrientation="nosensor"
+            />
+        <activity
+            android:name=".activity.ActorDetailsActivity"
+            android:screenOrientation="nosensor"
+            />
+        <activity
+            android:name=".activity.BookDetailsActivity"
+            android:screenOrientation="nosensor"
+            />
+
+        <activity
+            android:theme="@style/AppTheme_NOTransluce"
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="nosensor"
+            />
+    </application>
+
+</manifest>
