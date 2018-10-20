@@ -1,11 +1,10 @@
 package com.hust.bookflow.model.bean;
 
 /**
- * Created by ChinaLHR on 2016/12/24.
- * Email:13435500980@163.com
+ * Created by 文辉 on 2018/10/19.
  */
 
-public class BookHttpResult<T> {
+public class BookListHttpResult<T> {
 
     private int count;
     private T books;
@@ -25,6 +24,4 @@ public class BookHttpResult<T> {
     public void setBooks(T books) {
         this.books = books;
     }
-
-
 }

@@ -1,13 +1,13 @@
 package com.hust.bookflow.model.bean;
 
 /**
- * Created by ChinaLHR on 2016/12/24.
- * Email:13435500980@163.com
+ * Created by 文辉 on 2018/10/19.
  */
 
-public class BookHttpResult<T> {
+public class HomeHttpResult<T> {
 
     private int count;
+    private int total;
     private T books;
 
     public int getCount() {
@@ -18,6 +18,14 @@ public class BookHttpResult<T> {
         this.count = count;
     }
 
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
     public T getBooks() {
         return books;
     }
@@ -25,6 +33,4 @@ public class BookHttpResult<T> {
     public void setBooks(T books) {
         this.books = books;
     }
-
-
 }

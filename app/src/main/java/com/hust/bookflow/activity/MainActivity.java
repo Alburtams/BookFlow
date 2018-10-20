@@ -323,7 +323,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         super.onPause();
     }
 
-    // TODO 修改该类为获取图书信息
     class mAsyncTask extends AsyncTask<Void,Void,List<String>> {
         @Override
         protected void onPostExecute(List<String> list) {
