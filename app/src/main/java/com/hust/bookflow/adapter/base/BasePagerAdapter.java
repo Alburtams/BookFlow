@@ -33,14 +33,14 @@ public abstract class BasePagerAdapter<T> extends RecyclerView.Adapter<RecyclerV
     /**
      * 设置脚布局
      */
-    public void setFooterView(View footerView) {
+    /*public void setFooterView(View footerView) {
         mFooterView = footerView;
         notifyItemInserted(getItemCount() - 1);
-    }
+    }*/
 
-    public View getFooterView() {
+    /*public View getFooterView() {
         return mFooterView;
-    }
+    }*/
     /**
      * 升级数据
      */

@@ -24,7 +24,7 @@ import rx.Subscriber;
  */
 
 public abstract class BasePagerFragment extends Fragment {
-    public static final int RECORD_COUNT = 18;
+    public static final int RECORD_COUNT = 9;
     public int mStart = 0;
     private Subscriber<Integer> mSubscriber;
     public int position;
@@ -114,7 +114,7 @@ public abstract class BasePagerFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(getActivity())) {
                     updateMovieData();
-                    footer.setVisibility(View.VISIBLE);
+//                    footer.setVisibility(View.VISIBLE);
                     pagerbaserv.scrollToPosition(mAdapter.getItemCount() - 1);
 
                 }

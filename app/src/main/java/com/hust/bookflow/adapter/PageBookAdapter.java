@@ -30,10 +30,10 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mFooterView != null && viewType == TYPE_FOOTER)
-            return new MyViewHolder(mFooterView);
+        /*if (mFooterView != null && viewType == TYPE_FOOTER)
+            return new MyViewHolder(mFooterView);*/
 
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_basepager, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_homelist, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -41,11 +41,10 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_FOOTER) return;
 
-        ((PageBookAdapter.MyViewHolder)holder).item_base_tv_title.setText(mDate.get(position).getTitle());
-        ((PageBookAdapter.MyViewHolder)holder).item_base_tv_number.setText(mDate.get(position).getRating().getAverage() + "");
-        ((PageBookAdapter.MyViewHolder)holder).item_movie_ratingbar.setRating(Float.parseFloat(mDate.get(position).getRating().getAverage())/2);
+        ((PageBookAdapter.MyViewHolder)holder).item_base_tv_title.setText(mDate.get(position).getBook_name());
+
         Glide.with(mContext)
-                .load(mDate.get(position).getImages().getLarge())
+                .load(mDate.get(position).getPicture())
                 .into(((PageBookAdapter.MyViewHolder)holder).item_base_iv);
 
         //设置点击事件
@@ -54,7 +53,7 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
                 @Override
                 public void onClick(View view) {
                     int position = holder.getLayoutPosition();
-                    mListener.ItemClickListener(holder.itemView, mDate.get(position).getId(),mDate.get(position).getImages().getLarge());
+                    mListener.ItemClickListener(holder.itemView, mDate.get(position).getBook_id(),mDate.get(position).getPicture());
                 }
             });
 
@@ -73,17 +72,13 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView item_base_iv;
         TextView item_base_tv_title;
-        TextView item_base_tv_number;
-        RatingBar item_movie_ratingbar;
         CardView item_movie_cardview;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             item_base_iv = (ImageView) itemView.findViewById(R.id.item_base_iv);
             item_base_tv_title = (TextView) itemView.findViewById(R.id.item_base_tv_title);
-            item_base_tv_number = (TextView) itemView.findViewById(R.id.item_base_tv_number);
-            item_movie_ratingbar = (RatingBar) itemView.findViewById(R.id.item_base_ratingbar);
-            item_movie_cardview = (CardView) itemView.findViewById(R.id.item_movie_cardview);
+            item_movie_cardview = (CardView) itemView.findViewById(R.id.item_homebook_cardview);
         }
     }
 }
