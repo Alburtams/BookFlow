@@ -114,7 +114,7 @@ public abstract class BasePagerFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(getActivity())) {
                     updateMovieData();
-//                    footer.setVisibility(View.VISIBLE);
+                    footer.setVisibility(View.VISIBLE);
                     pagerbaserv.scrollToPosition(mAdapter.getItemCount() - 1);
 
                 }

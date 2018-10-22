@@ -30,8 +30,8 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        /*if (mFooterView != null && viewType == TYPE_FOOTER)
-            return new MyViewHolder(mFooterView);*/
+        if (mFooterView != null && viewType == TYPE_FOOTER)
+            return new MyViewHolder(mFooterView);
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_homelist, parent, false);
         return new MyViewHolder(view);

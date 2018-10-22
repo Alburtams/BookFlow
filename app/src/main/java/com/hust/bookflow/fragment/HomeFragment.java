@@ -47,7 +47,7 @@ public class HomeFragment extends BasePagerFragment {
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
         pagerbaserv.setLayoutManager(mLayoutManager);
         mAdapter = new PageBookAdapter(getContext(), mBookbean);
-//        footer = LayoutInflater.from(this.getActivity()).inflate(R.layout.item_footer, pagerbaserv, false);
+        footer = LayoutInflater.from(this.getActivity()).inflate(R.layout.item_footer, pagerbaserv, false);
 
         Observable.just(mdate = CacheUtils.readbean(getActivity(), CacheUtils.DataCache_book, Constants.BOOKTITLE[position]))
                 .subscribeOn(Schedulers.io())
@@ -62,7 +62,7 @@ public class HomeFragment extends BasePagerFragment {
                         }
                     }
                 });
-//        mAdapter.setFooterView(footer);
+        mAdapter.setFooterView(footer);
         pagerbaserv.setAdapter(mAdapter);
     }
 
