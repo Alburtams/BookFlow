@@ -38,7 +38,7 @@ public class SearchBookAdapter extends BaseSearchAdapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (getItemViewType(position) == TYPE_FOOTER) return;
+        /*if (getItemViewType(position) == TYPE_FOOTER) return;
         Glide.with(mContext)
                 .load(bean.get(position).getImages().getLarge())
                 .into(((Holder) holder).item_search_iv);
@@ -64,7 +64,7 @@ public class SearchBookAdapter extends BaseSearchAdapter {
                     mListener.onItemClick(bean.get(position).getId(),bean.get(position).getImages().getLarge());
                 }
             });
-        }
+        }*/
 
 
     }

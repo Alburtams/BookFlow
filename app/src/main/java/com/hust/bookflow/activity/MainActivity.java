@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,9 +29,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
+import com.hust.bookflow.fragment.HomeFragment;
 import com.hust.bookflow.fragment.MovieFragment;
 import com.hust.bookflow.fragment.SettingFragment;
 import com.hust.bookflow.fragment.factory.FragmentFactory;
+import com.hust.bookflow.fragment.pagerfragment.MoviePagerFragment;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.PreferncesUtils;
 import com.hust.bookflow.utils.SpUtils;
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private List<String> navList = new ArrayList<>();
     private mAsyncTask mAsy;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mFragmentManager = getSupportFragmentManager();
         DefaultFragment = mFragmentManager.findFragmentByTag(title);
         if (DefaultFragment == null) {
-            Fragment movieFragment = new MovieFragment();
+            Fragment movieFragment = new HomeFragment();
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.main_container, movieFragment, title)
@@ -282,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
@@ -299,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     public class LocalBroadcastReceiver extends BroadcastReceiver {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onReceive(Context context, Intent intent) {
             Boolean isopen = PreferncesUtils.getBoolean(context, Constants.PREF_KEY_AUTO_IMG, false);
@@ -317,6 +324,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setDefaultNav() {
         nav_header_img.setImageDrawable(getDrawable(R.drawable.nav_bg));
         nav_header_title.setText("简豆，简而美的APP");
@@ -336,7 +344,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         super.onPause();
     }
 
-    // TODO 修改该类为获取图书信息
     class mAsyncTask extends AsyncTask<Void,Void,List<String>> {
         @Override
         protected void onPostExecute(List<String> list) {

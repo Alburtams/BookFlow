@@ -1,11 +1,16 @@
 package com.hust.bookflow.fragment.factory;
 
+import android.support.v4.app.Fragment;
+
 import com.hust.bookflow.fragment.BookFragment;
 import com.hust.bookflow.fragment.ChangeLabelFragment;
 import com.hust.bookflow.fragment.CollectionFragment;
+import com.hust.bookflow.fragment.HomeFragment;
 import com.hust.bookflow.fragment.LeaderboardFragment;
 import com.hust.bookflow.fragment.MovieFragment;
 import com.hust.bookflow.fragment.base.BaseFragment;
+import com.hust.bookflow.fragment.pagerfragment.BookPagerFragment;
+import com.hust.bookflow.fragment.pagerfragment.MoviePagerFragment;
 import com.hust.bookflow.utils.Constants;
 
 /**
@@ -14,14 +19,14 @@ import com.hust.bookflow.utils.Constants;
  */
 
 public class FragmentFactory {
-    public static BaseFragment getFragment(String title) {
-        BaseFragment fragment = null;
+    public static Fragment getFragment(String title) {
+        Fragment fragment = null;
         switch (title) {
             case Constants.HOME:
-                fragment = new MovieFragment();
+                fragment = new MoviePagerFragment();
                 break;
             case Constants.BOOKBACK:
-                fragment = new BookFragment();
+                fragment = new BookPagerFragment();
                 break;
             case Constants.HistoryList:
                 fragment = new LeaderboardFragment();

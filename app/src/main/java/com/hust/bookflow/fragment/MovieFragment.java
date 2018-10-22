@@ -32,11 +32,6 @@ public class MovieFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String[] stringArray = SpUtils.getStringArray(getActivity(), Constants.MOVIEKEY);
-        if(stringArray!=null&&stringArray.length>1){
-            Constants.MOVIETITLE = SpUtils.getStringArray(getActivity(),Constants.MOVIEKEY);
-            Constants.CHANGELABEL_MOVIE = false;
-        }
 
     }
 

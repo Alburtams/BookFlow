@@ -9,7 +9,7 @@
     android:padding="4dp"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
-    android:id="@+id/item_movie_cardview"
+    android:id="@+id/item_homebook_cardview"
     >
 
     <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/item_base_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:textSize="12sp"/>
-            </LinearLayout>
+            </LinearLayout>-->
             <TextView
                 android:id="@+id/item_base_tv_title"
                 android:layout_width="wrap_content"
