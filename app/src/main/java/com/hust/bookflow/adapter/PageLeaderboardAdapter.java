@@ -35,7 +35,7 @@ public class PageLeaderboardAdapter extends BasePagerAdapter<SubjectsBean>{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mFooterView != null && viewType == TYPE_FOOTER)
             return new MyViewHolder(mFooterView);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_basepager, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_homelist, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -89,9 +89,9 @@ public class PageLeaderboardAdapter extends BasePagerAdapter<SubjectsBean>{
             super(itemView);
             item_base_iv = (ImageView) itemView.findViewById(R.id.item_base_iv);
             item_base_tv_title = (TextView) itemView.findViewById(R.id.item_base_tv_title);
-            item_base_tv_number = (TextView) itemView.findViewById(R.id.item_base_tv_number);
-            item_movie_ratingbar = (RatingBar) itemView.findViewById(R.id.item_base_ratingbar);
-            item_movie_cardview = (CardView) itemView.findViewById(R.id.item_movie_cardview);
+//            item_base_tv_number = (TextView) itemView.findViewById(R.id.item_base_tv_number);
+//            item_movie_ratingbar = (RatingBar) itemView.findViewById(R.id.item_base_ratingbar);
+            item_movie_cardview = (CardView) itemView.findViewById(R.id.item_homebook_cardview);
         }
     }
 }

@@ -33,7 +33,7 @@ public class PageMovieAdapter extends BasePagerAdapter<SubjectsBean> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mFooterView != null && viewType == TYPE_FOOTER)
             return new MyViewHolder(mFooterView);
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_basepager, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_homelist, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -42,8 +42,8 @@ public class PageMovieAdapter extends BasePagerAdapter<SubjectsBean> {
         if (getItemViewType(position) == TYPE_FOOTER) return;
 
         ((MyViewHolder)holder).item_base_tv_title.setText(mDate.get(position).getTitle());
-        ((MyViewHolder)holder).item_base_tv_number.setText(mDate.get(position).getRating().getAverage() + "");
-        ((MyViewHolder)holder).item_movie_ratingbar.setRating((float) mDate.get(position).getRating().getAverage() / 2);
+//        ((MyViewHolder)holder).item_base_tv_number.setText(mDate.get(position).getRating().getAverage() + "");
+//        ((MyViewHolder)holder).item_movie_ratingbar.setRating((float) mDate.get(position).getRating().getAverage() / 2);
 
         Glide.with(mContext)
                 .load(mDate.get(position).getImages().getLarge())
@@ -73,17 +73,17 @@ public class PageMovieAdapter extends BasePagerAdapter<SubjectsBean> {
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView item_base_iv;
         TextView item_base_tv_title;
-        TextView item_base_tv_number;
-        RatingBar item_movie_ratingbar;
+        /*TextView item_base_tv_number;
+        RatingBar item_movie_ratingbar;*/
         CardView item_movie_cardview;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             item_base_iv = (ImageView) itemView.findViewById(R.id.item_base_iv);
             item_base_tv_title = (TextView) itemView.findViewById(R.id.item_base_tv_title);
-            item_base_tv_number = (TextView) itemView.findViewById(R.id.item_base_tv_number);
-            item_movie_ratingbar = (RatingBar) itemView.findViewById(R.id.item_base_ratingbar);
-            item_movie_cardview = (CardView) itemView.findViewById(R.id.item_movie_cardview);
+            /*item_base_tv_number = (TextView) itemView.findViewById(R.id.item_base_tv_number);
+            item_movie_ratingbar = (RatingBar) itemView.findViewById(R.id.item_base_ratingbar);*/
+            item_movie_cardview = (CardView) itemView.findViewById(R.id.item_homebook_cardview);
         }
     }
 
