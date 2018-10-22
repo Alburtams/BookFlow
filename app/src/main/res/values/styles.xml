@@ -28,7 +28,7 @@
     </style>
 
     <!--RatingBar样式-->
-    <style name="MovieRatingBar" >
+    <style name="MovieRatingBar">
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="android:minHeight">16dp</item>
         <item name="android:maxHeight">16dp</item>
@@ -47,7 +47,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="SearchViewTheme" >
+    <style name="SearchViewTheme">
         <!--激活颜色-->
         <item name="colorControlActivated">@color/colorAccent</item>
         <!--没激活的颜色-->
@@ -57,4 +57,8 @@
         <item name="android:textColorPrimary">@color/color_search_text</item>
 
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

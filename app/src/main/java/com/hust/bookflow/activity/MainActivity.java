@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,7 +44,7 @@ import com.hust.bookflow.utils.jsoupUtils.GetNavImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener  {
 
     private NavigationView mainnav;
     private android.support.v4.widget.DrawerLayout maindrawerlayout;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private View headerView;
     private ImageView nav_header_img;
     private TextView nav_header_title;
+    private ImageButton nav_header_button;
     public static final String ACTION_LOCAL_SEND = "action.local.send";
     private static final String SAVE_STATE_TITLE = "title";
     private final LocalBroadcastReceiver localReceiver = new LocalBroadcastReceiver();
@@ -118,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         headerView = mainnav.getHeaderView(0);
         nav_header_img = (ImageView) headerView.findViewById(R.id.nav_header_img);
         nav_header_title = (TextView) headerView.findViewById(R.id.nav_header_title);
+        nav_header_button=(ImageButton)headerView.findViewById(R.id.nav_header_button);
+        nav_header_button.setOnClickListener(this);
     }
 
     /**
@@ -289,6 +293,15 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         super.onSaveInstanceState(outState, outPersistentState);
         outPersistentState.putString(SAVE_STATE_TITLE, title);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.nav_header_button:
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+        }
     }
 
     public class LocalBroadcastReceiver extends BroadcastReceiver {
