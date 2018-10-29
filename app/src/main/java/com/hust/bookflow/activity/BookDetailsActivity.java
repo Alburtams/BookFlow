@@ -42,6 +42,7 @@ import com.hust.bookflow.adapter.base.BaseRecyclerAdapter;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
+import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
 import com.hust.bookflow.model.httputils.BookHttpMethods;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.ImageUtils;
@@ -53,6 +54,7 @@ import com.hust.bookflow.utils.jsoupUtils.GetBookInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -217,7 +219,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             setTheme(R.style.AppTheme_Light);
 
         }
-        setContentView(R.layout.activity_bookdetailsold);
+        setContentView(R.layout.activity_bookdetails);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(makeTransition());
         }
@@ -264,7 +266,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 
             }
         };
-        BookHttpMethods.getInstance().getBookById(mSubscriber, BookId);
+        BookFlowHttpMethods.getInstance().getBookDetails(mSubscriber, BookId);
     }
 
     /**
@@ -272,33 +274,21 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
      */
     private void updateView() {
         atvbookll.setVisibility(View.VISIBLE);
-        if (mBookBean.getRating() != null) {
-            float rate = Float.parseFloat(mBookBean.getRating().getAverage()) / 2;
-            atv_book_ratingbar.setRating(rate);
-            atv_book_ratingnumber.setText(rate * 2 + "");
-            atv_book_ratings_count.setText(mBookBean.getRating().getNumRaters() + UIUtils.getString(this, R.string.md_movie_evaluation));
-        }
 
-        atv_book_title.setText(mBookBean.getTitle());
+
+        atv_book_title.setText(mBookBean.getBook_name());
         atv_book_author.setText(UIUtils.getString(this, R.string.book_author));
-        StringUtils.addViewString(mBookBean.getAuthor(), atv_book_author);
-        atv_book_pub.setText(UIUtils.getString(this, R.string.book_press) + mBookBean.getPublisher() + "/" + mBookBean.getPubdate());
+        StringUtils.addViewString(Arrays.asList(mBookBean.getAuthor()), atv_book_author);
+        atv_book_pub.setText(UIUtils.getString(this, R.string.book_press) + mBookBean.getPress() + "/" /*+ mBookBean.getPubdate()*/);
 
-        if (!mBookBean.getSubtitle().trim().equals("")) {
-            atv_book_subtitle.setText(UIUtils.getString(this, R.string.book_subtitle) + mBookBean.getSubtitle());
-        } else {
-            atv_book_subtitle.setVisibility(View.GONE);
-        }
 
-        if (!mBookBean.getPages().trim().equals("")) {
-            atv_book_pages.setText(UIUtils.getString(this, R.string.book_pages) + mBookBean.getPages());
-        } else {
-            atv_book_pages.setVisibility(View.GONE);
-        }
+        atv_book_subtitle.setVisibility(View.GONE);
+        atv_book_pages.setVisibility(View.GONE);
 
-        if (!mBookBean.getSummary().trim().equals("")) {
+
+        if (!mBookBean.getBook_description().trim().equals("")) {
             atvbooksummarytitle.setText(UIUtils.getString(this, R.string.md_movie_brief));
-            atvbooksummary.setText(mBookBean.getSummary());
+            atvbooksummary.setText(mBookBean.getBook_description());
             atvbooksummarymore.setText(UIUtils.getString(this, R.string.md_more));
         } else {
             atvbooksummarytitle.setText(UIUtils.getString(this, R.string.ad_nomore));
@@ -306,12 +296,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             atvbooksummarymore.setVisibility(View.GONE);
         }
 
-        if (!mBookBean.getAuthor_intro().trim().equals("")) {
-            atvbookauthorintrotitle.setText(UIUtils.getString(this, R.string.book_actor_info));
-            atvbookauthorintro.setText(mBookBean.getAuthor_intro());
-        } else {
-            atv_book_author_ll.setVisibility(View.GONE);
-        }
+        atv_book_author_ll.setVisibility(View.GONE);
     }
 
     private void initView() {
@@ -422,16 +407,16 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.atv_book_iv_author:
+            /*case R.id.atv_book_iv_author:
                 showbuttondialog(TYPE_AUTHOR, mBookBean.getAuthor_intro());
-                break;
-            case R.id.atv_book_iv_list:
+                break;*/
+            /*case R.id.atv_book_iv_list:
                 showbuttondialog(TYPE_LIST, mBookBean.getAuthor_intro());
-                break;
-            case R.id.atv_book_fab:
+                break;*/
+            /*case R.id.atv_book_fab:
                 WebViewActivity WebViewActivity = new WebViewActivity();
                 WebViewActivity.toWebActivity(BookDetailsActivity.this, mBookBean.getAlt(), mBookBean.getTitle());
-                break;
+                break;*/
         }
     }
 
@@ -444,7 +429,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         if (TYPE.equals(TYPE_AUTHOR)) {
             btndialog_cate.setText(TYPE_AUTHOR);
             btndialog_title.setText("");
-            StringUtils.addViewString(mBookBean.getAuthor(), btndialog_title);
+            StringUtils.addViewString(Arrays.asList(mBookBean.getAuthor()), btndialog_title);
             btdialog_tv.setText(author_intro);
         } else {
             btndialog_cate.setText(TYPE_LIST);
@@ -487,11 +472,10 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         Book_db book_db = new Book_db();
         book_db.setBook_id(BookId);
         book_db.setImgurl(imageUrl);
-        book_db.setTitle(mBookBean.getTitle());
-        String s = StringUtils.SpliceString(mBookBean.getAuthor());
+        book_db.setTitle(mBookBean.getBook_name());
+        String s = StringUtils.SpliceString(Arrays.asList(mBookBean.getAuthor()));
         book_db.setAuthor(s);
-        book_db.setPublisher(mBookBean.getPublisher());
-        book_db.setRating(Float.valueOf(mBookBean.getRating().getAverage()));
+        book_db.setPublisher(mBookBean.getPress());
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = dateFormat.format(now);
