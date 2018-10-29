@@ -74,6 +74,16 @@
             android:padding="8dp">
 
             <TextView
+                android:id="@+id/activity_md_ratingnumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/movieTitleColor"
+                android:textSize="22sp"
+                android:text="@string/book_detail_borrow"
+                />
+
+            <!--<TextView
                 android:id="@+id/atv_book_ratingnumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="10sp"
-                />
+                />-->
 
         </LinearLayout>
 

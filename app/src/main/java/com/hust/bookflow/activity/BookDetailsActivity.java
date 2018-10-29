@@ -43,7 +43,6 @@ import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
-import com.hust.bookflow.model.httputils.BookHttpMethods;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.ImageUtils;
 import com.hust.bookflow.utils.PreferncesUtils;
@@ -168,9 +167,9 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         atv_book_pub = (TextView) atvbookinclude.findViewById(R.id.atv_book_pub);
         atv_book_subtitle = (TextView) atvbookinclude.findViewById(R.id.atv_book_subtitle);
         atv_book_pages = (TextView) atvbookinclude.findViewById(R.id.atv_book_pages);
-        atv_book_ratingnumber = (TextView) atvbookinclude.findViewById(R.id.atv_book_ratingnumber);
-        atv_book_ratingbar = (RatingBar) atvbookinclude.findViewById(R.id.atv_book_ratingbar);
-        atv_book_ratings_count = (TextView) atvbookinclude.findViewById(R.id.atv_book_ratings_count);
+//        atv_book_ratingnumber = (TextView) atvbookinclude.findViewById(R.id.atv_book_ratingnumber);
+//        atv_book_ratingbar = (RatingBar) atvbookinclude.findViewById(R.id.atv_book_ratingbar);
+//        atv_book_ratings_count = (TextView) atvbookinclude.findViewById(R.id.atv_book_ratings_count);
         atv_book_iv_author = (ImageView) findViewById(R.id.atv_book_iv_author);
         atv_book_iv_list = (ImageView) findViewById(R.id.atv_book_iv_list);
         atvbookrefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark);
@@ -255,8 +254,8 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                     mBookBean = bookDetailsBean;
                     updateView();
                     lockCollection = true;
-                    mAsyncTask = new AsyncTask();
-                    mAsyncTask.execute();
+//                    mAsyncTask = new AsyncTask();
+//                    mAsyncTask.execute();
                     atvbookliketitle.setText("正在加载中...");
 
                 } else {
