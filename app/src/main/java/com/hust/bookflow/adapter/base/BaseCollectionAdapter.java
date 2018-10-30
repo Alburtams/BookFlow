@@ -57,8 +57,8 @@ public abstract class BaseCollectionAdapter extends RecyclerView.Adapter<Recycle
             super(itemView);
              item_collection_card = (CardView) itemView.findViewById(R.id.item_collection_card);
              item_collection_img = (ImageView) itemView.findViewById(R.id.item_collection_img);
-             item_collection_ratingbar = (RatingBar) itemView.findViewById(R.id.item_collection_ratingbar);
-             item_collection_ratingnum = (TextView) itemView.findViewById(R.id.item_collection_ratingnum);
+//             item_collection_ratingbar = (RatingBar) itemView.findViewById(R.id.item_collection_ratingbar);
+//             item_collection_ratingnum = (TextView) itemView.findViewById(R.id.item_collection_ratingnum);
              item_collection_ratll = (LinearLayout) itemView.findViewById(R.id.item_collection_ratll);
              item_collection_title = (TextView) itemView.findViewById(R.id.item_collection_title);
              item_collection_tv1 = (TextView) itemView.findViewById(R.id.item_collection_tv1);

@@ -27,6 +27,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -48,6 +49,7 @@ import com.hust.bookflow.utils.ImageUtils;
 import com.hust.bookflow.utils.PreferncesUtils;
 import com.hust.bookflow.utils.SnackBarUtils;
 import com.hust.bookflow.utils.StringUtils;
+import com.hust.bookflow.utils.ToastUtils;
 import com.hust.bookflow.utils.UIUtils;
 import com.hust.bookflow.utils.jsoupUtils.GetBookInfo;
 
@@ -128,6 +130,8 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private BottomSheetBehavior behavior;
     private GreenDaoUtils mDaoUtils;
 
+    private Button book_borrow_btn;
+
     public static void toActivity(Activity activity, String id, String img) {
         Intent intent = new Intent(activity, BookDetailsActivity.class);
         intent.putExtra(KEY_BOOK_ID, id);
@@ -143,7 +147,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private void init() {
         this.atvbookrefresh = (SwipeRefreshLayout) findViewById(R.id.atv_book_refresh);
         this.atvbookcoorl = (CoordinatorLayout) findViewById(R.id.atv_book_coorl);
-        this.atvbookfab = (FloatingActionButton) findViewById(R.id.atv_book_fab);
+//        this.atvbookfab = (FloatingActionButton) findViewById(R.id.atv_book_fab);
         this.atvbooknested = (NestedScrollView) findViewById(R.id.atv_book_nested);
         this.atvbookll = (LinearLayout) findViewById(R.id.atv_book_ll);
         this.atvbookrvlike = (RecyclerView) findViewById(R.id.atv_book_rv_like);
@@ -181,6 +185,8 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         btndialog_cate = (TextView) findViewById(R.id.btndialog_cate);
         btndialog_close = (ImageView) findViewById(R.id.btndialog_close);
         btdialog_tv = (TextView) findViewById(R.id.btdialog_tv);
+
+        book_borrow_btn = (Button) findViewById(R.id.book_borrow_btn);
 
         View bottomSheet = findViewById(R.id.btndialog_nes);
         behavior = BottomSheetBehavior.from(bottomSheet);
@@ -256,7 +262,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                     lockCollection = true;
 //                    mAsyncTask = new AsyncTask();
 //                    mAsyncTask.execute();
-                    atvbookliketitle.setText("正在加载中...");
+//                    atvbookliketitle.setText("正在加载中...");
 
                 } else {
                     SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.error));
@@ -293,6 +299,14 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             atvbooksummarytitle.setText(UIUtils.getString(this, R.string.ad_nomore));
             atvbooksummary.setVisibility(View.GONE);
             atvbooksummarymore.setVisibility(View.GONE);
+        }
+
+        if (false) {
+            // 判断是否已登录
+        } else if (mBookBean.getAvailable().equals("0")) {
+            // 书不可用
+            book_borrow_btn.setEnabled(false);
+            ToastUtils.show(this, "当前图书已借出");
         }
 
         atv_book_author_ll.setVisibility(View.GONE);
@@ -394,7 +408,9 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 
         atv_book_iv_author.setOnClickListener(this);
         atv_book_iv_list.setOnClickListener(this);
-        atvbookfab.setOnClickListener(this);
+//        atvbookfab.setOnClickListener(this);
+
+        book_borrow_btn.setOnClickListener(this);
     }
 
     @Override
@@ -416,6 +432,10 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 WebViewActivity WebViewActivity = new WebViewActivity();
                 WebViewActivity.toWebActivity(BookDetailsActivity.this, mBookBean.getAlt(), mBookBean.getTitle());
                 break;*/
+            case R.id.book_borrow_btn:
+                // TODO 进入扫码界面
+                ToastUtils.show(this, "借书");
+                break;
         }
     }
 

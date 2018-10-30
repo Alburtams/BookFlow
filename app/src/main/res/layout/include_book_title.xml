@@ -55,61 +55,76 @@
     </LinearLayout>
 
 
-    <android.support.v7.widget.CardView
+    <Button
+        android:id="@+id/book_borrow_btn"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:layout_gravity="center_vertical"
         android:layout_margin="5dp"
         android:orientation="vertical"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="5dp"
-        >
+        android:text="@string/book_detail_borrow"
+        android:background="@color/color_borrow_btn"
+        />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:padding="8dp">
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="2"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:orientation="vertical"-->
+        <!--app:cardCornerRadius="2dp"-->
+        <!--app:cardElevation="5dp"-->
+        <!--android:clickable="true"-->
+        <!--app:cardBackgroundColor="@color/color_borrow_btn"-->
+        <!--android:saveEnabled="false"-->
+        <!--&gt;-->
 
-            <TextView
-                android:id="@+id/activity_md_ratingnumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/movieTitleColor"
-                android:textSize="22sp"
-                android:text="@string/book_detail_borrow"
-                />
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:padding="8dp">-->
 
-            <!--<TextView
-                android:id="@+id/atv_book_ratingnumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/movieTitleColor"
-                android:textSize="22sp"
-                />
+            <!--<TextView-->
+                <!--android:id="@+id/activity_md_ratingnumber"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/movieTitleColor"-->
+                <!--android:textSize="22sp"-->
+                <!--android:text="@string/book_detail_borrow"-->
+                <!--/>-->
 
-            <RatingBar
-                android:id="@+id/atv_book_ratingbar"
-                style="@style/MovieRatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:isIndicator="true"
-                android:numStars="5"/>
+            <!--&lt;!&ndash;<TextView-->
+                <!--android:id="@+id/atv_book_ratingnumber"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/movieTitleColor"-->
+                <!--android:textSize="22sp"-->
+                <!--/>-->
 
-            <TextView
-                android:id="@+id/atv_book_ratings_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="10sp"
-                />-->
+            <!--<RatingBar-->
+                <!--android:id="@+id/atv_book_ratingbar"-->
+                <!--style="@style/MovieRatingBar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:isIndicator="true"-->
+                <!--android:numStars="5"/>-->
 
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/atv_book_ratings_count"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:textSize="10sp"-->
+                <!--/>&ndash;&gt;-->
 
-    </android.support.v7.widget.CardView>
+        <!--</LinearLayout>-->
+
+    <!--</android.support.v7.widget.CardView>-->
 </LinearLayout>

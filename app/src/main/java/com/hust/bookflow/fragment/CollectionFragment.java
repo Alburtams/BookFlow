@@ -43,8 +43,11 @@ public class CollectionFragment extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_collection, container, false);
         collection_vp = (ViewPager) view.findViewById(R.id.collection_vp);
         collection_tab = (BottomBar) view.findViewById(R.id.collection_tab);
+        collection_tab.setVisibility(View.GONE);
         initView();
         initListener();
+        collection_vp.setCurrentItem(1, false);
+        collection_tab.getTabAtPosition(1).setSelected(true);
         return view;
     }
 

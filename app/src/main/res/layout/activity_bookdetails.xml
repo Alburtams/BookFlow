@@ -298,7 +298,7 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <android.support.design.widget.FloatingActionButton
+        <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/atv_book_fab"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -307,7 +307,7 @@
             app:backgroundTint="@color/colorAccent"
             app:layout_anchor="@id/atv_book_appbar"
             app:layout_anchorGravity="bottom|right|end"
-            />
+            />-->
     </android.support.design.widget.CoordinatorLayout>
 
 
