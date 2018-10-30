@@ -94,7 +94,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private LinearLayout atv_book_author_ll;
     private TextView atv_book_title;
     private TextView atv_book_author;
-    private TextView atv_book_subtitle;
+    private TextView atv_book_loc;
     private TextView atv_book_pages;
     private TextView atv_book_ratingnumber;
     private RatingBar atv_book_ratingbar;
@@ -169,7 +169,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         atv_book_title = (TextView) atvbookinclude.findViewById(R.id.atv_book_title);
         atv_book_author = (TextView) atvbookinclude.findViewById(R.id.atv_book_author);
         atv_book_pub = (TextView) atvbookinclude.findViewById(R.id.atv_book_pub);
-        atv_book_subtitle = (TextView) atvbookinclude.findViewById(R.id.atv_book_subtitle);
+        atv_book_loc = (TextView) atvbookinclude.findViewById(R.id.atv_book_loc);
         atv_book_pages = (TextView) atvbookinclude.findViewById(R.id.atv_book_pages);
 //        atv_book_ratingnumber = (TextView) atvbookinclude.findViewById(R.id.atv_book_ratingnumber);
 //        atv_book_ratingbar = (RatingBar) atvbookinclude.findViewById(R.id.atv_book_ratingbar);
@@ -286,8 +286,13 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         StringUtils.addViewString(Arrays.asList(mBookBean.getAuthor()), atv_book_author);
         atv_book_pub.setText(UIUtils.getString(this, R.string.book_press) + mBookBean.getPress() + "/" /*+ mBookBean.getPubdate()*/);
 
+        if (mBookBean.getLocation() == null || mBookBean.getLocation().trim().equals("")) {
+            atv_book_loc.setVisibility(View.GONE);
+        } else {
+            atv_book_loc.setText(UIUtils.getString(this, R.string.book_loc) + mBookBean.getLocation());
+        }
 
-        atv_book_subtitle.setVisibility(View.GONE);
+
         atv_book_pages.setVisibility(View.GONE);
 
 
