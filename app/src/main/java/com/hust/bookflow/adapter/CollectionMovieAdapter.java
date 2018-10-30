@@ -37,8 +37,8 @@ public class CollectionMovieAdapter extends BaseCollectionAdapter {
         ((Holder) holder).item_collection_tv2.setText("上映时间：" + mdate.get(position).getYear());
         ((Holder) holder).item_collection_tv3.setText("收藏时间:" + mdate.get(position).getTime());
 
-        ((Holder) holder).item_collection_ratingbar.setRating(mdate.get(position).getRating() / 2);
-        ((Holder) holder).item_collection_ratingnum.setText(mdate.get(position).getRating() + "");
+//        ((Holder) holder).item_collection_ratingbar.setRating(mdate.get(position).getRating() / 2);
+//        ((Holder) holder).item_collection_ratingnum.setText(mdate.get(position).getRating() + "");
         if (mListener != null) {
             ((Holder) holder).item_collection_card.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -2,6 +2,7 @@ package com.hust.bookflow.model.httputils;
 
 import com.hust.bookflow.bookflowservice.BookFlowService;
 import com.hust.bookflow.doubanservice.DouBanService;
+import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.bean.BookHttpResult;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.HomeHttpResult;
@@ -27,7 +28,7 @@ import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
 
 public class BookFlowHttpMethods {
 
-    public static final String BACKEND_BOOK_URL = "http://202.114.6.8:8080/bookcrossing/";
+    public static final String BACKEND_BOOK_URL = "http://202.114.6.141:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -61,6 +62,20 @@ public class BookFlowHttpMethods {
                 .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
                     @Override
                     public List<BooksBean> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getBookDetails(Subscriber<BookDetailsBean> subscriber, String bookId) {
+        bfService.getBookDetails(bookId)
+                .onErrorReturn(new Func1<Throwable, BookDetailsBean>() {
+                    @Override
+                    public BookDetailsBean call(Throwable throwable) {
                         return null;
                     }
                 })
