@@ -4,6 +4,8 @@ import com.hust.bookflow.bookflowservice.BookFlowService;
 import com.hust.bookflow.doubanservice.DouBanService;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.bean.BookHttpResult;
+import com.hust.bookflow.model.bean.BookListBeans;
+import com.hust.bookflow.model.bean.BookListHttpResult;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.HomeHttpResult;
 
@@ -85,6 +87,35 @@ public class BookFlowHttpMethods {
                 .subscribe(subscriber);
     }
 
+    public void getBorrowed(Subscriber<List<BookListBeans>> subscriber, String stuId) {
+        bfService.getBorrowed(stuId)
+                .map(new ListHttpResultFunc<List<BookListBeans>>())
+                .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
+                    @Override
+                    public List<BookListBeans> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void returnBook(Subscriber<Boolean> subscriber, String bookId, String stuId) {
+        bfService.returnBook(bookId, stuId)
+                .onErrorReturn(new Func1<Throwable, Boolean>() {
+                    @Override
+                    public Boolean call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
     private class HttpResultFunc<T> implements Func1<HomeHttpResult<T>, T> {
         @Override
         public T call(HomeHttpResult<T> tHomeHttpResult) {
@@ -96,4 +127,14 @@ public class BookFlowHttpMethods {
         }
     }
 
+    private class ListHttpResultFunc<T> implements Func1<BookListHttpResult<T>, T> {
+        @Override
+        public T call(BookListHttpResult<T> tHomeHttpResult) {
+            if (tHomeHttpResult != null) {
+                return tHomeHttpResult.getBooks();
+            } else {
+                throw new RuntimeException("出错了");
+            }
+        }
+    }
 }
