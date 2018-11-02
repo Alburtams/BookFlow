@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 摄像头权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -52,6 +56,7 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="nosensor">
 
+
             <!--
             android:parentActivityName=".activity.MainActivity">
             <meta-data
@@ -59,6 +64,15 @@
                 android:value="com.hust.bookflow.activity.MainActivity" />
             -->
         </activity>
+        <activity
+            android:name=".activity.ScanDetailsActivity"
+            android:screenOrientation="nosensor"
+            />
+        <!--加入扫描Activity-->
+        <activity
+            android:name="com.google.zxing.activity.CaptureActivity"
+            android:screenOrientation="nosensor"
+            />
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register"

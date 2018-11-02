@@ -1,18 +1,23 @@
 package com.hust.bookflow.activity;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,8 +30,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.fragment.HomeFragment;
@@ -34,6 +41,7 @@ import com.hust.bookflow.fragment.MovieFragment;
 import com.hust.bookflow.fragment.SettingFragment;
 import com.hust.bookflow.fragment.factory.FragmentFactory;
 import com.hust.bookflow.fragment.pagerfragment.MoviePagerFragment;
+import com.hust.bookflow.utils.Constant;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.PreferncesUtils;
 import com.hust.bookflow.utils.SpUtils;
@@ -232,6 +240,37 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constant.REQ_PERM_CAMERA:
+                // 摄像头权限申请
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 获得授权
+                    startQrCode();
+                } else {
+                    // 被禁止授权
+                    Toast.makeText(MainActivity.this, "请至权限中心打开本应用的相机访问权限", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+
+    // 开始扫码
+    private void startQrCode() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // 申请权限
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, Constant.REQ_PERM_CAMERA);
+            return;
+        }
+        // 二维码扫码
+        Bundle bundle = new Bundle();
+        bundle.putString("flag","1");
+        Intent intent = new Intent(MainActivity.this, CaptureActivity.class).putExtras(bundle);
+        startActivity(intent);
+    }
     /**
      * Toolbar menu点击事件
      *
@@ -244,6 +283,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             case R.id.toolbar_menu_search:
                 Intent mIntent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(mIntent);
+                break;
+            //添加扫码按钮
+            case R.id.toolbar_menu_scan:
+                startQrCode();
                 break;
         }
         return false;
