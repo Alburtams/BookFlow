@@ -1,17 +1,22 @@
 package com.hust.bookflow.activity;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -32,10 +37,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.adapter.LikeMovieAdapter;
@@ -44,6 +51,7 @@ import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
+import com.hust.bookflow.utils.Constant;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.ImageUtils;
 import com.hust.bookflow.utils.PreferncesUtils;
@@ -425,6 +433,40 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Constant.REQ_PERM_CAMERA:
+                // 摄像头权限申请
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 获得授权
+                    startQrCode();
+                } else {
+                    // 被禁止授权
+                    Toast.makeText(BookDetailsActivity.this, "请至权限中心打开本应用的相机访问权限", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+
+    // 开始扫码
+    private void startQrCode() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // 申请权限
+            ActivityCompat.requestPermissions(BookDetailsActivity.this, new String[]{Manifest.permission.CAMERA}, Constant.REQ_PERM_CAMERA);
+            return;
+        }
+        String stuId = "sdfsdf";
+        // 二维码扫码
+        Bundle bundle = new Bundle();
+        bundle.putString("flag","2");
+        bundle.putString("bookid",BookId);
+        bundle.putString("stuid",stuId);
+        Intent intent = new Intent(BookDetailsActivity.this, CaptureActivity.class).putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             /*case R.id.atv_book_iv_author:
@@ -439,6 +481,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 break;*/
             case R.id.book_borrow_btn:
                 // TODO 进入扫码界面
+                startQrCode();
                 ToastUtils.show(this, "借书");
                 break;
         }

@@ -8,5 +8,11 @@
         android:title="Search"
         app:showAsAction="always"
         />
+    <item
+        android:id="@+id/toolbar_menu_scan"
+        android:icon="@mipmap/scan"
+        android:title="Search"
+        app:showAsAction="always"
+        />
 
 </menu>
