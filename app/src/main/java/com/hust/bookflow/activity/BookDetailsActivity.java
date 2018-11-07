@@ -253,6 +253,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             @Override
             public void onCompleted() {
                 atvbookrefresh.setRefreshing(false);
+                BookDetailsBean bookDetailsBean =  mBookBean;
             }
 
             @Override

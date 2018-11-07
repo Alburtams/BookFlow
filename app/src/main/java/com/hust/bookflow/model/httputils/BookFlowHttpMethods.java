@@ -31,7 +31,7 @@ import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
 
 public class BookFlowHttpMethods {
 
-    public static final String BACKEND_BOOK_URL = "http://202.114.6.105:8080/bookcrossing/";
+    public static final String BACKEND_BOOK_URL = "http://222.20.103.64:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 

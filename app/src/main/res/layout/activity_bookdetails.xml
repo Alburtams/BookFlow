@@ -251,7 +251,8 @@
             android:id="@+id/btndialog_nes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/bottom_sheet_behavior">
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
