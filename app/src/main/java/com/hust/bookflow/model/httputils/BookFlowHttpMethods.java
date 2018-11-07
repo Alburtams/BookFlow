@@ -3,8 +3,11 @@ package com.hust.bookflow.model.httputils;
 import com.hust.bookflow.bookflowservice.BookFlowService;
 import com.hust.bookflow.doubanservice.DouBanService;
 import com.hust.bookflow.model.bean.BookHttpResult;
+import com.hust.bookflow.model.bean.BookListBeans;
+import com.hust.bookflow.model.bean.BookListHttpResult;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.HomeHttpResult;
+import com.hust.bookflow.model.bean.MessageBean;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -26,8 +29,9 @@ import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
  */
 
 public class BookFlowHttpMethods {
-
-    public static final String BACKEND_BOOK_URL = "http://202.114.6.8:8080/bookcrossing/";
+//http://202.114.6.8:8080/bookcrossing/
+    //http://202.114.7.68:8080/Test/servlet/
+    public static final String BACKEND_BOOK_URL = "http://10.11.32.21:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -61,6 +65,49 @@ public class BookFlowHttpMethods {
                 .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
                     @Override
                     public List<BooksBean> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getBookByName(Subscriber<List<BooksBean>> subscriber, String bookname,int start,int count){
+        bfService.searchByName(bookname,start,count)
+                .map(new HttpResultFunc<List<BooksBean>>())
+                .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
+                    @Override
+                    public List<BooksBean> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void login(Subscriber<MessageBean> subscriber, String stuID, String pwd){
+        bfService.login(stuID,pwd)
+                .onErrorReturn(new Func1<Throwable, MessageBean>() {
+                    @Override
+                    public MessageBean call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+//String schoName, String emailAddr
+    public void register(Subscriber<MessageBean> subscriber, String stuId,String stuName,String passwd){
+        bfService.register(stuId,stuName,passwd)
+                .onErrorReturn(new Func1<Throwable, MessageBean>() {
+                    @Override
+                    public MessageBean call(Throwable throwable) {
                         return null;
                     }
                 })

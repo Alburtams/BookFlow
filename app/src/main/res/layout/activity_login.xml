@@ -9,7 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.hust.bookflow.activity.LoginActivity">
-
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/atv_book_coorl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:colorBackground">
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/login_progress"
@@ -106,4 +110,5 @@
 </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>
