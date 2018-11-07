@@ -148,7 +148,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements AppBarLay
             setTheme(R.style.AppTheme_Light);
 
         }
-        setContentView(R.layout.activity_bookdetails);
+        setContentView(R.layout.activity_bookdetails_error);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(makeTransition());
         }

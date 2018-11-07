@@ -40,7 +40,7 @@
                         android:id="@+id/item_back_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
                         android:lines="1"
                         android:ellipsize="end"
                         android:textSize="16sp"
@@ -51,12 +51,12 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:padding="7dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         >
 
-                        <RatingBar
+                        <!--<RatingBar
                             android:id="@+id/item_search_rating"
                             style="@style/MovieRatingBar"
                             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:textSize="12sp"
-                            />
+                            />-->
                     </LinearLayout>
 
                     <TextView
@@ -88,7 +88,7 @@
                         android:id="@+id/item_back_tv2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="12dp"
                         android:lines="1"
                         android:ellipsize="end"
                         android:textSize="12sp"
@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <!--<TextView
                             android:id="@+id/item_back_tv3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:src="@drawable/search_open_24dp"
-                            />
+                            />-->
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -145,7 +145,8 @@
                 android:id="@+id/book_back_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="归还"
+                android:text="@string/back_book_btn"
+                android:background="@color/color_back_btn"
                 />
         </LinearLayout>
     </LinearLayout>

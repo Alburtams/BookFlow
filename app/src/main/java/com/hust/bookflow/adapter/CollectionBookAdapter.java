@@ -32,8 +32,8 @@ public class CollectionBookAdapter extends BaseCollectionAdapter {
                 .load(mdate.get(position).getImgurl())
                 .into(((Holder) holder).item_collection_img);
         ((Holder) holder).item_collection_title.setText(mdate.get(position).getTitle());
-        ((Holder) holder).item_collection_ratingbar.setRating(mdate.get(position).getRating()/2);
-        ((Holder) holder).item_collection_ratingnum.setText(mdate.get(position).getRating()+"");
+//        ((Holder) holder).item_collection_ratingbar.setRating(mdate.get(position).getRating()/2);
+//        ((Holder) holder).item_collection_ratingnum.setText(mdate.get(position).getRating()+"");
         ((Holder) holder).item_collection_tv1.setText("作者："+mdate.get(position).getAuthor());
         ((Holder) holder).item_collection_tv2.setText("出版社："+mdate.get(position).getPublisher());
         ((Holder) holder).item_collection_tv3.setText("收藏时间："+mdate.get(position).getTime());

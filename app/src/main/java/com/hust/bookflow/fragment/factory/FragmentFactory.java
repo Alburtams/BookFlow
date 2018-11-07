@@ -2,6 +2,7 @@ package com.hust.bookflow.fragment.factory;
 
 import android.support.v4.app.Fragment;
 
+import com.hust.bookflow.fragment.BookBackFragment;
 import com.hust.bookflow.fragment.BookFragment;
 import com.hust.bookflow.fragment.ChangeLabelFragment;
 import com.hust.bookflow.fragment.CollectionFragment;
@@ -26,7 +27,7 @@ public class FragmentFactory {
                 fragment = new MoviePagerFragment();
                 break;
             case Constants.BOOKBACK:
-                fragment = new BookPagerFragment();
+                fragment = new BookBackFragment();
                 break;
             case Constants.HistoryList:
                 fragment = new LeaderboardFragment();
