@@ -40,13 +40,19 @@ import com.google.zxing.decoding.RGBLuminanceSource;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.google.zxing.view.ViewfinderView;
 import com.hust.bookflow.R;
+import com.hust.bookflow.activity.BookDetailsActivity;
 import com.hust.bookflow.activity.ScanDetailsActivity;
+import com.hust.bookflow.activity.SearchActivity;
+import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
 import com.hust.bookflow.utils.Constant;
+import com.hust.bookflow.utils.ToastUtils;
 import com.hust.bookflow.utils.UriUtil;
 
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import rx.Subscriber;
 
 
 /**
@@ -79,6 +85,10 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     private String flag;
     private String stuId;
     private String bookId;
+
+    private Subscriber<Boolean> borrowBookSub;
+    private Boolean isBorrowedSuc;
+
     //	private Button cancelScanButton;
     /**
      * Called when the activity is first created.
@@ -183,14 +193,6 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
                 }
             }
         });
-    }
-
-    private void borrowBook() {
-        Toast.makeText(getApplicationContext(),"从主页跳转过来的",Toast.LENGTH_LONG);
-    }
-
-    private void toBookDetail() {
-        Toast.makeText(getApplicationContext(),"从详情跳转过来的",Toast.LENGTH_LONG);
     }
 
     /**
@@ -304,15 +306,45 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
 //        CaptureActivity.this.finish();
         //传到另一个页面显示
         manage(resultString);
-        startActivity(new Intent(CaptureActivity.this,ScanDetailsActivity.class).putExtra("show_data",resultString));
+//        startActivity(new Intent(CaptureActivity.this,ScanDetailsActivity.class).putExtra("show_data",resultString));
     }
 
     private void manage(String resultString) {
         if(flag.equals("1")) {
             //首页
+            BookDetailsActivity.toActivity(CaptureActivity.this, resultString, null);
         } else if (flag.equals("2")) {
             //详情
+            borrowBook(bookId, stuId);
+            if (isBorrowedSuc) {
+                ToastUtils.show(this, "借书成功");
+            } else {
+                ToastUtils.show(this, "借书失败");
+            }
         }
+        finish();
+    }
+
+    private void borrowBook(String bookId, String stuId) {
+        borrowBookSub = new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+                // TODO isBorrowedSuc赋值问题
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                isBorrowedSuc = false;
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                isBorrowedSuc = aBoolean;
+            }
+        };
+
+        BookFlowHttpMethods.getInstance().borrowBook(borrowBookSub, bookId, stuId);
+
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

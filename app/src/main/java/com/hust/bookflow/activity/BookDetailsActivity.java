@@ -253,6 +253,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             @Override
             public void onCompleted() {
                 atvbookrefresh.setRefreshing(false);
+                BookDetailsBean bookDetailsBean =  mBookBean;
             }
 
             @Override
@@ -287,6 +288,27 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
      */
     private void updateView() {
         atvbookll.setVisibility(View.VISIBLE);
+
+        if(imageUrl == null) {
+            Glide.with(this)
+                    .load(mBookBean.getPicture())
+                    .asBitmap()
+                    .listener(new RequestListener<String, Bitmap>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            int color = ImageUtils.getColor(resource);
+                            atvbookcolltl.setBackgroundColor(color);
+                            atvbookcolltl.setContentScrimColor(color);
+                            return false;
+                        }
+                    })
+                    .into(atvbookiv);
+        }
 
 
         atv_book_title.setText(mBookBean.getBook_name());
@@ -326,25 +348,26 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     }
 
     private void initView() {
-        Glide.with(this)
-                .load(imageUrl)
-                .asBitmap()
-                .listener(new RequestListener<String, Bitmap>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
-                        return false;
-                    }
+        if(imageUrl != null) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .asBitmap()
+                    .listener(new RequestListener<String, Bitmap>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        int color = ImageUtils.getColor(resource);
-                        atvbookcolltl.setBackgroundColor(color);
-                        atvbookcolltl.setContentScrimColor(color);
-                        return false;
-                    }
-                })
-                .into(atvbookiv);
-
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            int color = ImageUtils.getColor(resource);
+                            atvbookcolltl.setBackgroundColor(color);
+                            atvbookcolltl.setContentScrimColor(color);
+                            return false;
+                        }
+                    })
+                    .into(atvbookiv);
+        }
 
     }
 

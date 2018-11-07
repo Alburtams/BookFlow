@@ -12,6 +12,7 @@ import com.hust.bookflow.model.bean.HomeHttpResult;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+//import io.reactivex.android.schedulers.AndroidSchedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -30,7 +31,7 @@ import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
 
 public class BookFlowHttpMethods {
 
-    public static final String BACKEND_BOOK_URL = "http://202.114.6.105:8080/bookcrossing/";
+    public static final String BACKEND_BOOK_URL = "http://222.20.103.64:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -93,6 +94,20 @@ public class BookFlowHttpMethods {
                 .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
                     @Override
                     public List<BookListBeans> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void borrowBook(Subscriber<Boolean> subscriber, String bookId, String stuId) {
+        bfService.borrowBook(bookId, stuId)
+                .onErrorReturn(new Func1<Throwable, Boolean>() {
+                    @Override
+                    public Boolean call(Throwable throwable) {
                         return null;
                     }
                 })
