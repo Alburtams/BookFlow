@@ -34,6 +34,7 @@
             android:layout_marginLeft="52dp"
             />
         <TextView
+            android:id="@+id/nav_header_logintxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"

@@ -7,9 +7,6 @@ import java.io.Serializable;
  */
 
 // TODO
-<<<<<<< HEAD
-public class BookListBeans implements Serializable {
-=======
 public class BookListBeans {
 
     private String book_id;
@@ -57,5 +54,4 @@ public class BookListBeans {
     public void setPress(String press) {
         this.press = press;
     }
->>>>>>> master
 }

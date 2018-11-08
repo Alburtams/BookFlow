@@ -14,7 +14,6 @@ public class BooksBean implements Serializable {
     private String bookName;
     private String picture;
     private String author;
-    private String bookDescription;
     private String press; //出版社
 
     public String getBookId() {
@@ -47,14 +46,6 @@ public class BooksBean implements Serializable {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public String getBookDescription() {
-        return bookDescription;
-    }
-
-    public void setBookDescription(String bookDescription) {
-        this.bookDescription = bookDescription;
     }
 
     public String getPress() {

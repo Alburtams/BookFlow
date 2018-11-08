@@ -45,8 +45,8 @@ public class SearchMovieAdapter extends BaseSearchAdapter {
 
         ((Holder) holder).item_search_title.setText(bean.get(position).getTitle());
         float average = (float) bean.get(position).getRating().getAverage();
-        ((Holder) holder).item_search_rating.setRating(average / 2);
-        ((Holder) holder).item_search_ratnum.setText(average + "");
+        //((Holder) holder).item_search_rating.setRating(average / 2);
+        //((Holder) holder).item_search_ratnum.setText(average + "");
 
 
         ((Holder) holder).item_search_tv1.append("导演：");
@@ -69,7 +69,7 @@ public class SearchMovieAdapter extends BaseSearchAdapter {
             }
         }
 
-        ((Holder) holder).item_search_tv3.setText("上映时间："+bean.get(position).getYear());
+        //((Holder) holder).item_search_tv3.setText("上映时间："+bean.get(position).getYear());
         ((Holder) holder).item_search_switch.setVisibility(View.GONE);
         if (mListener!=null){
             ((Holder) holder).item_search_card.setOnClickListener(new View.OnClickListener() {

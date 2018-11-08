@@ -36,7 +36,15 @@
                 android:icon="@mipmap/setting"
                 android:title="@string/nav_menu_Settings"
                 />
+            <item
+                android:id="@+id/nav_menu_exit"
+                android:checkable="true"
+                android:icon="@mipmap/exit"
+                android:title="退出登录"
+                
+                />
 
         </menu>
     </item>
+
 </menu>

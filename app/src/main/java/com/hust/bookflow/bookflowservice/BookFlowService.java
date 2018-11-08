@@ -19,11 +19,11 @@ import rx.Observable;
 public interface BookFlowService {
 
     @FormUrlEncoded
-    @POST("LoginServlet")
+    @POST("user/login")
     Observable<MessageBean> login(@Field("stu_id") String stuId, @Field("passwd") String passwd);
-// @Field("email_addr") String emailAddr   @Field("scho_name") String schoName register login
+
     @FormUrlEncoded
-    @POST("RegisterServlet")
+    @POST("user/register")
     Observable<MessageBean> register(@Field("stu_id") String stuId, @Field("stu_name") String stuName,@Field("passwd") String passwd);
 
     // 首页图书列表
@@ -36,7 +36,7 @@ public interface BookFlowService {
 
     // 按name搜索
     @GET("search")
-    Observable<HomeHttpResult<List<BooksBean>>> searchByName(@Query("book_name") String bookName,@Query("start") int start, @Query("count") int count);
+    Observable<HomeHttpResult<List<BookListBeans>>> searchByName(@Query("book_name") String bookName,@Query("start") int start, @Query("count") int count);
 
     @FormUrlEncoded
     @POST("borrow")

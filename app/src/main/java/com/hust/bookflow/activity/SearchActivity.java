@@ -21,6 +21,7 @@ import com.hust.bookflow.adapter.SearchBookAdapter;
 import com.hust.bookflow.adapter.SearchMovieAdapter;
 import com.hust.bookflow.adapter.SpinnerAdapter;
 import com.hust.bookflow.adapter.base.BaseSearchAdapter;
+import com.hust.bookflow.model.bean.BookListBeans;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.SpinnerBean;
 import com.hust.bookflow.model.bean.SubjectsBean;
@@ -53,11 +54,9 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView searchrv;
 
     //private Subscriber<List<BooksBean>> moviesub;
-    private Subscriber<List<BooksBean>> booksub;
-    private Subscriber<BooksBean> mbooksub;
-    private BooksBean mbook;
+    private Subscriber<List<BookListBeans>> booksub;
     private List<SubjectsBean> mMovieBean;
-    private List<BooksBean> mBookBean;
+    private List<BookListBeans> mBookBean;
     private RecyclerView.LayoutManager mLayoutManager;
     private View mFootView;
     private ProgressBar searchpb;
@@ -113,7 +112,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(SearchActivity.this)) {
-                    //updateBook();
+                    updateBook();
                     mFootView.setVisibility(View.VISIBLE);
                     searchrv.scrollToPosition(mMovieAdapter.getItemCount() - 1);
                 }
@@ -131,7 +130,7 @@ public class SearchActivity extends AppCompatActivity {
     private void updateBook() {
         if (mBookAdapter.getStart() == mStart) return;
         mStart = mBookAdapter.getStart();
-        booksub = new Subscriber<List<BooksBean>>() {
+        booksub = new Subscriber<List<BookListBeans>>() {
             @Override
             public void onCompleted() {
                 mFootView.setVisibility(View.GONE);
@@ -141,7 +140,7 @@ public class SearchActivity extends AppCompatActivity {
                 mFootView.setVisibility(View.GONE);
             }
             @Override
-            public void onNext(List<BooksBean> list) {
+            public void onNext(List<BookListBeans> list) {
                 if (!list.isEmpty()) {
                     mBookAdapter.addData(list);
                 }
@@ -149,31 +148,6 @@ public class SearchActivity extends AppCompatActivity {
         };
         BookFlowHttpMethods.getInstance().getBookByName(booksub, q, mStart, COUNT);
     }
-
-   /* private void updateMovie() {
-        if (mMovieAdapter.getStart() == mStart) return;
-        mStart = mMovieAdapter.getStart();
-        moviesub = new Subscriber<List<SubjectsBean>>() {
-            @Override
-            public void onCompleted() {
-                mFootView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mFootView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNext(List<SubjectsBean> list) {
-                if (!list.isEmpty()) {
-                    mMovieAdapter.addData(list);
-                }
-            }
-        };
-        MovieHttpMethods.getInstance().getMovieByQ(booksub, q, mStart, COUNT);
-    }*/
-
 
     private void initView() {
         SearchManager mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -200,7 +174,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void SearchByName(String query) {
         showProgressbar();
-        booksub = new Subscriber<List<BooksBean>>() {
+        booksub = new Subscriber<List<BookListBeans>>() {
             @Override
             public void onCompleted() {
                 closeProgressbar();
@@ -211,7 +185,7 @@ public class SearchActivity extends AppCompatActivity {
                 ToastUtils.show(SearchActivity.this, "没有搜索到结果");
             }
             @Override
-            public void onNext(List<BooksBean> subjectsBeen) {
+            public void onNext(List<BookListBeans> subjectsBeen) {
                 if (!subjectsBeen.isEmpty()) {
                     mBookBean = subjectsBeen;
                     initRecyclerView();
@@ -247,7 +221,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if (booksub!=null) booksub.unsubscribe();
-        if (mbooksub!=null)mbooksub.unsubscribe();
         super.onDestroy();
     }
 }

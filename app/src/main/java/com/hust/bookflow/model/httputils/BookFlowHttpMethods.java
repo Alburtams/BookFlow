@@ -31,14 +31,8 @@ import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
  */
 
 public class BookFlowHttpMethods {
-<<<<<<< HEAD
-//http://202.114.6.8:8080/bookcrossing/
-    //http://202.114.7.68:8080/Test/servlet/
-    public static final String BACKEND_BOOK_URL = "http://10.11.32.21:8080/bookcrossing/";
-=======
-
-    public static final String BACKEND_BOOK_URL = "http://222.20.103.64:8080/bookcrossing/";
->>>>>>> master
+//
+    public static final String BACKEND_BOOK_URL = "http://10.11.33.170:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -81,20 +75,26 @@ public class BookFlowHttpMethods {
                 .subscribe(subscriber);
     }
 
-<<<<<<< HEAD
-    public void getBookByName(Subscriber<List<BooksBean>> subscriber, String bookname,int start,int count){
+    public void getBookByName(Subscriber<List<BookListBeans>> subscriber, String bookname,int start,int count){
         bfService.searchByName(bookname,start,count)
-                .map(new HttpResultFunc<List<BooksBean>>())
-                .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
+                .map(new HttpResultFunc<List<BookListBeans>>())
+                .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
                     @Override
-                    public List<BooksBean> call(Throwable throwable) {
-=======
+                    public List<BookListBeans> call(Throwable throwable) {
+                         return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
     public void getBookDetails(Subscriber<BookDetailsBean> subscriber, String bookId) {
         bfService.getBookDetails(bookId)
                 .onErrorReturn(new Func1<Throwable, BookDetailsBean>() {
                     @Override
                     public BookDetailsBean call(Throwable throwable) {
->>>>>>> master
                         return null;
                     }
                 })
@@ -104,20 +104,26 @@ public class BookFlowHttpMethods {
                 .subscribe(subscriber);
     }
 
-<<<<<<< HEAD
     public void login(Subscriber<MessageBean> subscriber, String stuID, String pwd){
         bfService.login(stuID,pwd)
                 .onErrorReturn(new Func1<Throwable, MessageBean>() {
                     @Override
                     public MessageBean call(Throwable throwable) {
-=======
+                         return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+    
     public void getBorrowed(Subscriber<List<BookListBeans>> subscriber, String stuId) {
         bfService.getBorrowed(stuId)
                 .map(new ListHttpResultFunc<List<BookListBeans>>())
                 .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
                     @Override
                     public List<BookListBeans> call(Throwable throwable) {
->>>>>>> master
                         return null;
                     }
                 })
@@ -126,14 +132,20 @@ public class BookFlowHttpMethods {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(subscriber);
     }
-<<<<<<< HEAD
-//String schoName, String emailAddr
+
     public void register(Subscriber<MessageBean> subscriber, String stuId,String stuName,String passwd){
         bfService.register(stuId,stuName,passwd)
                 .onErrorReturn(new Func1<Throwable, MessageBean>() {
                     @Override
                     public MessageBean call(Throwable throwable) {
-=======
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
 
     public void borrowBook(Subscriber<Boolean> subscriber, String bookId, String stuId) {
         bfService.borrowBook(bookId, stuId)
@@ -154,7 +166,6 @@ public class BookFlowHttpMethods {
                 .onErrorReturn(new Func1<Throwable, Boolean>() {
                     @Override
                     public Boolean call(Throwable throwable) {
->>>>>>> master
                         return null;
                     }
                 })

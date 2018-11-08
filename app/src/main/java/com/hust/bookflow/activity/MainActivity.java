@@ -1,19 +1,14 @@
 package com.hust.bookflow.activity;
 
-<<<<<<< HEAD
+
 import android.app.Activity;
-=======
 import android.Manifest;
->>>>>>> master
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-<<<<<<< HEAD
 import android.content.SharedPreferences;
-=======
 import android.content.pm.PackageManager;
->>>>>>> master
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -110,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
         //SharedPreferences preferences = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
         //String stuid= UserUtils.getStuID(preferences);
+        /*if (stuid.equals("")) {
+            // 未登录
+        }*/
     }
 
 
