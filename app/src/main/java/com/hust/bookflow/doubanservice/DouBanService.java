@@ -4,6 +4,7 @@ import com.hust.bookflow.model.bean.ActorDetailsBean;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.bean.BookHttpResult;
 import com.hust.bookflow.model.bean.BooksBean;
+import com.hust.bookflow.model.bean.MessageBean;
 import com.hust.bookflow.model.bean.MovieDetailsBean;
 import com.hust.bookflow.model.bean.MovieHttpResult;
 import com.hust.bookflow.model.bean.SubjectsBean;
@@ -11,6 +12,7 @@ import com.hust.bookflow.model.bean.SubjectsBean;
 import java.util.List;
 
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -94,19 +96,4 @@ public interface DouBanService {
     @GET("search")
     Observable<BookHttpResult<List<BooksBean>>> getBooksByQ
             (@Query("q") String q, @Query("start") int start, @Query("count") int count);
-
-    /**登录
-     * 成功 200
-     * 失败 500
-     * */
-    @POST("/user/login")
-    Observable<Object> login(@Field("stuID") String stuID, @Field("pwd") String pwd);
-
-    /**注册
-     * 成功 200
-     * 失败 500
-     * */
-    @POST("/user/register")
-    Observable<Object> register(@Field("name") String name, @Field("stuID") String stuID,@Field("pwd") String pwd,@Field("email") String email);
-
 }

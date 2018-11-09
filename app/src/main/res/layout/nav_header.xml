@@ -27,10 +27,26 @@
             android:id="@+id/nav_header_button"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/tab_book_24dp"
+            android:src="@drawable/login_imagebtn_img"
+            android:background="@drawable/login_imagebtn_img"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="52dip"
-
+            android:layout_marginBottom="52dp"
+            android:layout_marginLeft="52dp"
             />
+        <TextView
+            android:id="@+id/nav_header_logintxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:text="点我登录"
+            android:textStyle="bold"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="23dp"
+            android:layout_marginLeft="54dp"/>
 
 </FrameLayout>
