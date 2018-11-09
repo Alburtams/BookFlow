@@ -32,8 +32,7 @@ import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
 
 public class BookFlowHttpMethods {
 
-//
-    public static final String BACKEND_BOOK_URL = "http://10.11.33.170:8080/bookcrossing/";
+    public static final String BACKEND_BOOK_URL = "http://132.232.199.162:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -61,8 +60,8 @@ public class BookFlowHttpMethods {
         return Holder.BFINSTANCE;
     }
 
-    public void getHomeList(Subscriber<List<BooksBean>> subscriber, int count) {
-        bfService.getHomeList(count)
+    public void getHomeList(Subscriber<List<BooksBean>> subscriber, int start, int count) {
+        bfService.getHomeList(start, count)
                 .map(new HttpResultFunc<List<BooksBean>>())
                 .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
                     @Override
@@ -78,7 +77,7 @@ public class BookFlowHttpMethods {
 
     public void getBookByName(Subscriber<List<BookListBeans>> subscriber, String bookname,int start,int count){
         bfService.searchByName(bookname,start,count)
-                .map(new HttpResultFunc<List<BookListBeans>>())
+                .map(new ListHttpResultFunc<List<BookListBeans>>())
                 .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
                     @Override
                     public List<BookListBeans> call(Throwable throwable) {

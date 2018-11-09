@@ -7,11 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.hust.bookflow.R;
 import com.hust.bookflow.model.bean.MessageBean;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
+import com.hust.bookflow.utils.ToastUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -28,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email;
     private Button register_button;
     private Subscriber<MessageBean> mSubscriber;
+    private ProgressBar regProgBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
         repwd = (EditText) findViewById(R.id.repeat_pwd);
         //email=(EditText)findViewById(R.id.email);
         register_button = (Button) findViewById(R.id.register_button);
+        regProgBar = (ProgressBar) findViewById(R.id.register_progress);
+
         register_button.setOnClickListener(new View.OnClickListener() {
             @Override//点击跳转注册页面
             public void onClick(View view) {
                 if (!pwd.getText().toString().equals(repwd.getText().toString())) {
-                    Toast.makeText(RegisterActivity.this, "两次输入密码不匹配，请确认密码！", Toast.LENGTH_LONG).show();
+                    ToastUtils.show(RegisterActivity.this, "两次输入密码不匹配，请确认密码！");
                 }
                 attempRegister();
             }
@@ -55,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attempRegister() {
+        showProgressbar();
         String mname = name.getText().toString();
         String mstuid = stuid.getText().toString();
         //String mschoname=schoname.getText().toString();
@@ -63,10 +69,12 @@ public class RegisterActivity extends AppCompatActivity {
         mSubscriber = new Subscriber<MessageBean>() {
             @Override
             public void onCompleted() {
+                closeProgressbar();
             }
 
             @Override
             public void onError(Throwable e) {
+                closeProgressbar();
             }
 
             @Override
@@ -74,14 +82,14 @@ public class RegisterActivity extends AppCompatActivity {
                 if (messageBean != null) {
                     if (messageBean.getResult() == 200) {
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        Toast.makeText(RegisterActivity.this, messageBean.getErrMsg(), Toast.LENGTH_LONG).show();
+                        ToastUtils.show(RegisterActivity.this, "注册成功");
                         startActivity(intent);
                         finish();
                     } else {
                         Toast.makeText(RegisterActivity.this, messageBean.getErrMsg(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_LONG).show();
+                    ToastUtils.show(RegisterActivity.this, "注册失败");
                 }
             }
         };
@@ -112,5 +120,13 @@ public class RegisterActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void showProgressbar() {
+        regProgBar.setVisibility(View.VISIBLE);
+    }
+
+    private void closeProgressbar() {
+        regProgBar.setVisibility(View.GONE);
     }
 }

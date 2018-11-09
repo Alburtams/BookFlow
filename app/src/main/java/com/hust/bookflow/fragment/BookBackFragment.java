@@ -1,5 +1,7 @@
 package com.hust.bookflow.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +13,14 @@ import android.widget.ProgressBar;
 
 import com.hust.bookflow.R;
 import com.hust.bookflow.activity.BookDetailsActivity;
+import com.hust.bookflow.activity.LoginActivity;
 import com.hust.bookflow.activity.SearchActivity;
 import com.hust.bookflow.adapter.BookBackAdapter;
 import com.hust.bookflow.fragment.base.BaseFragment;
 import com.hust.bookflow.model.bean.BookListBeans;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
 import com.hust.bookflow.utils.ToastUtils;
+import com.hust.bookflow.utils.UserUtils;
 
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class BookBackFragment extends BaseFragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar backpb;
 
+    private SharedPreferences userData;
     private String stuId;
 
     @Override
@@ -49,10 +54,21 @@ public class BookBackFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_to_back, container, false);
         this.backrv = (RecyclerView) view.findViewById(R.id.book_back_rv);
+        //获取当前登录用户的信息
+        isLogin();
         initView();
         initListener();
         loadData();
         return view;
+    }
+
+    private void isLogin() {
+        userData = getActivity().getSharedPreferences("userInfo", Activity.MODE_PRIVATE);
+        stuId= UserUtils.getStuID(userData);
+        if (stuId.equals("")) {
+            ToastUtils.show(getActivity(), "请先登录");
+            LoginActivity.toActivity(getActivity());
+        }
     }
 
     private void loadData() {
@@ -118,7 +134,7 @@ public class BookBackFragment extends BaseFragment {
             @Override
             public void onNext(Boolean aBoolean) {
                 if(!aBoolean) {
-                    ToastUtils.show(getActivity(), "还书失败");
+                    ToastUtils.show(getActivity(), "还书成功");
                 }
             }
         };

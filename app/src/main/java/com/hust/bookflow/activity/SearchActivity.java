@@ -111,7 +111,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(SearchActivity.this)) {
+                if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(SearchActivity.this) && mBookBean.size() == 10) {
                     updateBook();
                     mFootView.setVisibility(View.VISIBLE);
                     searchrv.scrollToPosition(mMovieAdapter.getItemCount() - 1);
@@ -194,7 +194,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         };
-        BookFlowHttpMethods.getInstance().getBookByName(booksub, query,0,10);
+        BookFlowHttpMethods.getInstance().getBookByName(booksub, query,0,COUNT);
     }
 
     private void initRecyclerView() {

@@ -1,7 +1,7 @@
 <resources>
 
     <!--Nav-->
-    <string name="app_name">简豆</string>
+    <string name="app_name">书享校园</string>
     <string name="nav_menu_home">首页</string>
     <string name="nav_menu_bookToReturn">待还图书</string>
     <string name="nav_menu_historyList">历史借阅</string>
@@ -69,4 +69,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="title_activity_register">注册</string>
     <string name="back_book_btn">归还</string>
+    <string name="string_exit">退出登录</string>
+    <string name="string_nav_login">点击登录</string>
 </resources>

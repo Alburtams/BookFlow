@@ -16,11 +16,11 @@
             android:checkable="true"
             android:icon="@mipmap/collection"
             android:title="@string/nav_menu_Collection"/>
-        <item
+        <!--<item
             android:id="@+id/nav_menu_historyList"
             android:checkable="true"
             android:icon="@mipmap/list"
-            android:title="@string/nav_menu_historyList"/>
+            android:title="@string/nav_menu_historyList"/>-->
     </group>
     <item android:title="@string/nav_menu_system">
         <menu>
@@ -40,8 +40,8 @@
                 android:id="@+id/nav_menu_exit"
                 android:checkable="true"
                 android:icon="@mipmap/exit"
-                android:title="退出登录"
-                
+                android:title="@string/string_exit"
+                android:visible="false"
                 />
 
         </menu>

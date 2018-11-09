@@ -91,7 +91,7 @@ public class HomeFragment extends BasePagerFragment {
             }
         };
 
-        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, RECORD_COUNT);
+        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, mStart, RECORD_COUNT);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class HomeFragment extends BasePagerFragment {
         };
 
 
-        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, RECORD_COUNT);
+        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, 0, RECORD_COUNT);
     }
 
 

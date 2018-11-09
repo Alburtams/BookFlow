@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -59,6 +60,7 @@ import com.hust.bookflow.utils.SnackBarUtils;
 import com.hust.bookflow.utils.StringUtils;
 import com.hust.bookflow.utils.ToastUtils;
 import com.hust.bookflow.utils.UIUtils;
+import com.hust.bookflow.utils.UserUtils;
 import com.hust.bookflow.utils.jsoupUtils.GetBookInfo;
 
 import java.text.SimpleDateFormat;
@@ -140,6 +142,9 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 
     private Button book_borrow_btn;
 
+    private SharedPreferences userData;
+    private String stuId;
+
     public static void toActivity(Activity activity, String id, String img) {
         Intent intent = new Intent(activity, BookDetailsActivity.class);
         intent.putExtra(KEY_BOOK_ID, id);
@@ -207,6 +212,11 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             menu.getItem(0).setIcon(R.drawable.collection_false);
             isCollection = false;
         }
+
+        //获取当前登录用户的信息
+        userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
+        stuId= UserUtils.getStuID(userData);
+
     }
 
 
@@ -479,7 +489,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             ActivityCompat.requestPermissions(BookDetailsActivity.this, new String[]{Manifest.permission.CAMERA}, Constant.REQ_PERM_CAMERA);
             return;
         }
-        String stuId = "sdfsdf";
         // 二维码扫码
         Bundle bundle = new Bundle();
         bundle.putString("flag","2");
@@ -503,9 +512,14 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 WebViewActivity.toWebActivity(BookDetailsActivity.this, mBookBean.getAlt(), mBookBean.getTitle());
                 break;*/
             case R.id.book_borrow_btn:
-                // TODO 进入扫码界面
-                startQrCode();
-                ToastUtils.show(this, "借书");
+                if (stuId.equals("")) {
+                    ToastUtils.show(BookDetailsActivity.this, "请先登录");
+                    LoginActivity.toActivity(BookDetailsActivity.this);
+                } else {
+                    // TODO 进入扫码界面
+                    startQrCode();
+                    ToastUtils.show(this, "借书");
+                }
                 break;
         }
     }
