@@ -16,8 +16,6 @@ import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.PreferncesUtils;
 import com.hust.bookflow.utils.ToastUtils;
 
-import de.psdev.licensesdialog.LicensesDialog;
-
 
 /**
  * Created by ChinaLHR on 2016/12/25.
