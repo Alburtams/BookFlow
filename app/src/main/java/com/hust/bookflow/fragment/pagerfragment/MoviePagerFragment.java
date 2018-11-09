@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.hust.bookflow.R;
-import com.hust.bookflow.activity.MovieDetailsActivity;
-import com.hust.bookflow.adapter.PageMovieAdapter;
 import com.hust.bookflow.fragment.base.BasePagerFragment;
 import com.hust.bookflow.model.bean.SubjectsBean;
 import com.hust.bookflow.model.httputils.MovieHttpMethods;
@@ -42,18 +40,7 @@ public class MoviePagerFragment extends BasePagerFragment {
 
     @Override
     public void onRecyclerViewListener() {
-        mAdapter.setOnClickListener(new PageMovieAdapter.OnItemClickListener() {
 
-
-            @Override
-            public void ItemClickListener(View view, String id, String img) {
-                MovieDetailsActivity.toActivity(getActivity(), id, img);
-            }
-
-            @Override
-            public void ItemLongClickListener(View view, int postion) {
-            }
-        });
     }
 
     @Override
@@ -129,7 +116,7 @@ public class MoviePagerFragment extends BasePagerFragment {
         List<SubjectsBean> mSubjectbean = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
         pagerbaserv.setLayoutManager(mLayoutManager);
-        mAdapter = new PageMovieAdapter(getContext(), mSubjectbean);
+        
         footer = LayoutInflater.from(this.getActivity()).inflate(R.layout.item_footer, pagerbaserv, false);
 
         Observable.just(mdate = CacheUtils.readbean(getActivity(), CacheUtils.DataCache_movie, Constants.MOVIETITLE[position]))

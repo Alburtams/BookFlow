@@ -46,8 +46,6 @@ import com.bumptech.glide.request.target.Target;
 import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
-import com.hust.bookflow.adapter.LikeMovieAdapter;
-import com.hust.bookflow.adapter.base.BaseRecyclerAdapter;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
@@ -132,7 +130,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private List<String> LikeBookTitle;
     private List<String> LikeBookImage;
     private List<String> LikeBookId;
-    private LikeMovieAdapter mLikeAdapter;
+
     private TextView btndialog_title;
     private TextView btndialog_cate;
     private ImageView btndialog_close;
@@ -631,19 +629,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 atvbookrvlike.setVisibility(View.VISIBLE);
                 atvbookrvlike.setLayoutManager(new LinearLayoutManager(BookDetailsActivity.this,
                         LinearLayoutManager.HORIZONTAL, false));
-                mLikeAdapter = new LikeMovieAdapter(BookDetailsActivity.this, LikeBookTitle, LikeBookImage, LikeBookId);
-                atvbookrvlike.setAdapter(mLikeAdapter);
-
-                mLikeAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(String id, String url) {
-                        if (id != null && url != null) {
-                            BookDetailsActivity.toActivity(BookDetailsActivity.this, id, url);
-                        } else {
-                            SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.error));
-                        }
-                    }
-                });
             } else {
                 atvbookliketitle.setText(UIUtils.getString(BookDetailsActivity.this, R.string.error));
             }

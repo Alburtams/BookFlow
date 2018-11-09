@@ -11,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hust.bookflow.R;
-import com.hust.bookflow.adapter.LabelAdapter;
 import com.hust.bookflow.adapter.helper.ItemDragHelperCallback;
 import com.hust.bookflow.utils.Constants;
-import com.hust.bookflow.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ public class LabelPagerMovieFragment extends Fragment {
     private RecyclerView pager_f_labelmovie;
     private List<String> mLabel;
     private List<String> oLabel;
-    private LabelAdapter adapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,23 +50,7 @@ public class LabelPagerMovieFragment extends Fragment {
         final ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(pager_f_labelmovie);
 
-        adapter = new LabelAdapter(getActivity(), helper, mLabel, oLabel,Constants.MOVIEKEY);
-        adapter.setOnMyChannelItemClickListener(new LabelAdapter.OnMyChannelItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                ToastUtils.show(getActivity(),"请长按或者点击编辑更换标签");
-            }
-        });
-        //设置头布局占四个span，其他占一个
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                int viewType = adapter.getItemViewType(position);
-                return viewType == adapter.TYPE_MY || viewType == adapter.TYPE_OTHER ? 1 : 4;
-            }
-        });
 
-        pager_f_labelmovie.setAdapter(adapter);
 
     }
 

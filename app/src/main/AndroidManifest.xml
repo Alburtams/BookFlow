@@ -39,12 +39,6 @@
             android:theme="@style/AppTheme_NOTransluce"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".activity.MovieDetailsActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".activity.ActorDetailsActivity"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".activity.BookDetailsActivity"
             android:screenOrientation="nosensor" />
         <activity

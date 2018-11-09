@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
-import com.hust.bookflow.activity.MovieDetailsActivity;
 import com.hust.bookflow.adapter.PageLeaderboardAdapter;
-import com.hust.bookflow.adapter.PageMovieAdapter;
 import com.hust.bookflow.adapter.base.BasePagerAdapter;
 import com.hust.bookflow.model.bean.SubjectsBean;
 import com.hust.bookflow.model.httputils.MovieHttpMethods;
@@ -115,18 +113,7 @@ public class LeaderboardNewFragment extends Fragment {
                 }
             }
         });
-        mAdapter.setOnClickListener(new PageMovieAdapter.OnItemClickListener() {
 
-
-            @Override
-            public void ItemClickListener(View view, String id, String img) {
-                MovieDetailsActivity.toActivity(getActivity(), id, img);
-            }
-
-            @Override
-            public void ItemLongClickListener(View view, int postion) {
-            }
-        });
         pagerleadeaderboardfab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

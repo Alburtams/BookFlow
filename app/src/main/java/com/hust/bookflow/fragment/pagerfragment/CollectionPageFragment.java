@@ -12,12 +12,8 @@ import android.view.ViewGroup;
 
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
-import com.hust.bookflow.activity.ActorDetailsActivity;
 import com.hust.bookflow.activity.BookDetailsActivity;
-import com.hust.bookflow.activity.MovieDetailsActivity;
-import com.hust.bookflow.adapter.CollectionActorAdapter;
 import com.hust.bookflow.adapter.CollectionBookAdapter;
-import com.hust.bookflow.adapter.CollectionMovieAdapter;
 import com.hust.bookflow.adapter.base.BaseCollectionAdapter;
 import com.hust.bookflow.model.db.Actor_db;
 import com.hust.bookflow.model.db.Book_db;
@@ -45,9 +41,9 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
     private GreenDaoUtils utils;
     private RecyclerView page_collection_rv;
 
-    private CollectionMovieAdapter movieadapter;
+
     private CollectionBookAdapter mBookAdapter;
-    private CollectionActorAdapter mActorAdapter;
+
 
 
     private List<Movie_db> moviedata;
@@ -123,15 +119,7 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         if (title.equals(Constants.COLLECTION_TYPE[0])) {
-            movieadapter = new CollectionMovieAdapter(getActivity(), moviedata);
-            page_collection_rv.setLayoutManager(mLayoutManager);
-            page_collection_rv.setAdapter(movieadapter);
-            movieadapter.setOnItemClickListener(new BaseCollectionAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String id, String url) {
-                    MovieDetailsActivity.toActivity(getActivity(), id, url);
-                }
-            });
+
         } else if (title.equals(Constants.COLLECTION_TYPE[1])) {
             mBookAdapter = new CollectionBookAdapter(getActivity(),bookdata);
             page_collection_rv.setLayoutManager(mLayoutManager);
@@ -143,15 +131,7 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
                 }
             });
         }else if (title.equals(Constants.COLLECTION_TYPE[2])){
-            mActorAdapter = new CollectionActorAdapter(getActivity(),actordata);
-            page_collection_rv.setLayoutManager(mLayoutManager);
-            page_collection_rv.setAdapter(mActorAdapter);
-            mActorAdapter.setOnItemClickListener(new BaseCollectionAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String id, String url) {
-                    ActorDetailsActivity.toActivity(getActivity(),id,url);
-                }
-            });
+
         }
 
 

@@ -14,8 +14,6 @@ import android.widget.ProgressBar;
 
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
-import com.hust.bookflow.activity.MovieDetailsActivity;
-import com.hust.bookflow.adapter.PageTopAdapter;
 import com.hust.bookflow.adapter.base.BasePagerAdapter;
 import com.hust.bookflow.model.bean.SubjectsBean;
 import com.hust.bookflow.model.httputils.MovieHttpMethods;
@@ -98,18 +96,7 @@ public class LeaderboardTopFragment extends Fragment {
 
 
         });
-        mAdapter.setOnClickListener(new PageTopAdapter.OnItemClickListener() {
 
-
-            @Override
-            public void ItemClickListener(View view, String id, String img) {
-                MovieDetailsActivity.toActivity(getActivity(), id, img);
-            }
-
-            @Override
-            public void ItemLongClickListener(View view, int postion) {
-            }
-        });
 
 
         pagertop250fab.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +147,7 @@ public class LeaderboardTopFragment extends Fragment {
         List<SubjectsBean> mList = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         pagertop250rv.setLayoutManager(mLayoutManager);
-        mAdapter = new PageTopAdapter(getActivity(), mList);
+
 
         Observable.just(mdate = CacheUtils.readbean(getActivity(), CacheUtils.DataCache_movie, Constants.LEADERBOARD[2]))
                 .subscribeOn(Schedulers.io())
