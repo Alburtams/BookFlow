@@ -9,7 +9,8 @@
             android:id="@+id/nav_header_img"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/nav_bg"/>
         <TextView
             android:id="@+id/nav_header_title"
             android:layout_width="match_parent"

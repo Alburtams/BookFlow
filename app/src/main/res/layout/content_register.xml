@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/login_bg"
     tools:context="com.hust.bookflow.activity.RegisterActivity"
     tools:showIn="@layout/activity_register">
 
@@ -123,6 +124,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="注册"
+                android:textColor="#ffff"
+                android:textSize="26dp"
+                android:background="#0fd4db"
                 android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>

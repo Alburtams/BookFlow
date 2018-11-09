@@ -79,7 +79,7 @@ import static com.hust.bookflow.R.drawable.collection_false;
  * Email:13435500980@163.com
  */
 
-public class BookDetailsActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+public class BookDetailsActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ImageView atvbookiv;
     private android.support.v7.widget.Toolbar atvbooktoolbar;
@@ -263,7 +263,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             @Override
             public void onCompleted() {
                 atvbookrefresh.setRefreshing(false);
-                BookDetailsBean bookDetailsBean =  mBookBean;
             }
 
             @Override
@@ -444,13 +443,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         });
         atvbookappbar.addOnOffsetChangedListener(this);
 
-        atvbookrefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initData();
-                initView();
-            }
-        });
+        atvbookrefresh.setOnRefreshListener(this);
 
         atv_book_iv_author.setOnClickListener(this);
         atv_book_iv_list.setOnClickListener(this);
@@ -589,6 +582,12 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 
     }
 
+    @Override
+    public void onRefresh() {
+        initData();
+        initView();
+    }
+
     class AsyncTask extends android.os.AsyncTask {
 
         @Override
@@ -660,6 +659,12 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             mAsyncTask.cancel(true);
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
     }
 
     @Override

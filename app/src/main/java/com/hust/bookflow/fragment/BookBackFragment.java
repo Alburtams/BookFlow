@@ -1,8 +1,11 @@
 package com.hust.bookflow.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import android.widget.ProgressBar;
 import com.hust.bookflow.R;
 import com.hust.bookflow.activity.BookDetailsActivity;
 import com.hust.bookflow.activity.LoginActivity;
+import com.hust.bookflow.activity.MainActivity;
 import com.hust.bookflow.activity.SearchActivity;
 import com.hust.bookflow.adapter.BookBackAdapter;
 import com.hust.bookflow.fragment.base.BaseFragment;
@@ -31,7 +35,7 @@ import rx.Subscriber;
  * Created by 文辉 on 2018/10/31.
  */
 
-public class BookBackFragment extends BaseFragment {
+public class BookBackFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private BookBackAdapter backAdapter;
     private RecyclerView backrv;
@@ -47,6 +51,9 @@ public class BookBackFragment extends BaseFragment {
     private String stuId;
 
     private boolean isBack;
+    private Subscriber<List<BookListBeans>> newBorrowedBookSub;
+
+    private Handler handler;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,10 +66,11 @@ public class BookBackFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_to_back, container, false);
         this.backrv = (RecyclerView) view.findViewById(R.id.book_back_rv);
         this.backpb = (ProgressBar) view.findViewById(R.id.back_pb);
+        this.backFresh = (SwipeRefreshLayout) view.findViewById(R.id.back_fresh);
         //获取当前登录用户的信息
         getUser();
         initView();
-//        initListener();
+        initListener();
         loadData();
         return view;
     }
@@ -78,20 +86,17 @@ public class BookBackFragment extends BaseFragment {
     }
 
     private void loadData() {
-//        backFresh.setRefreshing(true);
         showProgressbar();
         borrowedBookSub = new Subscriber<List<BookListBeans>>() {
             @Override
             public void onCompleted() {
                 closeProgressbar();
-//                backFresh.setRefreshing(false);
             }
 
             @Override
             public void onError(Throwable e) {
                 closeProgressbar();
                 ToastUtils.show(getActivity(), "查询已借阅书籍错误");
-//                backFresh.setRefreshing(false);
             }
 
             @Override
@@ -123,11 +128,6 @@ public class BookBackFragment extends BaseFragment {
                 // TODO
                 //获取当前登录学生学号
                 backBook(id, stuId); //还书操作
-                if(isBack) {
-                    ToastUtils.show(getActivity(), "还书成功");
-                } else {
-                    ToastUtils.show(getActivity(), "还书失败");
-                }
             }
         });
     }
@@ -143,14 +143,20 @@ public class BookBackFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 isBack = false;
-                ToastUtils.show(getActivity(), "还书失败");
+                Message msg = Message.obtain();
+                msg.arg1 = 0;
+                handler.sendMessage(msg);
+                ToastUtils.show(getContext(), "还书失败");
             }
 
             @Override
             public void onNext(Boolean aBoolean) {
                 isBack = aBoolean;
+                Message msg = Message.obtain();
+                msg.arg1 = aBoolean ? 1 : 0;
+                handler.sendMessage(msg);
                 if(!aBoolean) {
-                    ToastUtils.show(getActivity(), "还书成功");
+                    ToastUtils.show(getContext(), "还书成功");
                 }
             }
         };
@@ -158,16 +164,54 @@ public class BookBackFragment extends BaseFragment {
         BookFlowHttpMethods.getInstance().returnBook(backBookSub, bookId, stuId);
     }
 
+    @SuppressLint("HandlerLeak")
     private void initListener() {
         /**
          * 顶部下拉松开时会调用这个方法
          */
-        backFresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        backFresh.setOnRefreshListener(this);
+
+        handler = new Handler() {
             @Override
-            public void onRefresh() {
-                loadData();
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if(msg.arg1 == 1) {
+                    ToastUtils.show(getContext(), "还书成功");
+                } else {
+                    ToastUtils.show(getContext(), "还书失败");
+                }
+                onRefresh();
             }
-        });
+        };
+    }
+
+    private void updateData() {
+        backFresh.setRefreshing(true);
+        newBorrowedBookSub = new Subscriber<List<BookListBeans>>() {
+            @Override
+            public void onCompleted() {
+                backFresh.setRefreshing(false);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity(), "更新失败");
+                backFresh.setRefreshing(false);
+            }
+
+            @Override
+            public void onNext(List<BookListBeans> bookListBeanses) {
+                if (!bookListBeanses.isEmpty()) {
+                    ToastUtils.show(getActivity(), "更新成功");
+                } else {
+                    ToastUtils.show(getActivity(), "当前还未借阅图书");
+                }
+                mBookBean = bookListBeanses;
+                initRecyclerView();
+            }
+        };
+
+        BookFlowHttpMethods.getInstance().getBorrowed(newBorrowedBookSub, stuId);
     }
 
     private void initView() {
@@ -189,5 +233,10 @@ public class BookBackFragment extends BaseFragment {
             borrowedBookSub.unsubscribe();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onRefresh() {
+        updateData();
     }
 }
