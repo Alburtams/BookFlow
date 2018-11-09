@@ -1,7 +1,6 @@
 package com.hust.bookflow.model.httputils;
 
 import com.hust.bookflow.bookflowservice.BookFlowService;
-import com.hust.bookflow.doubanservice.DouBanService;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.bean.BookHttpResult;
 import com.hust.bookflow.model.bean.BookListBeans;
@@ -24,7 +23,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
 
 /**
  * Created by 文辉 on 2018/10/20.

@@ -1,6 +1,7 @@
 package com.hust.bookflow.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -25,7 +26,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,15 +37,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.fragment.HomeFragment;
-import com.hust.bookflow.fragment.MovieFragment;
 import com.hust.bookflow.fragment.SettingFragment;
 import com.hust.bookflow.fragment.factory.FragmentFactory;
-import com.hust.bookflow.fragment.pagerfragment.MoviePagerFragment;
 import com.hust.bookflow.utils.Constant;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.PreferncesUtils;
@@ -183,12 +180,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mFragmentManager = getSupportFragmentManager();
         DefaultFragment = mFragmentManager.findFragmentByTag(title);
         if (DefaultFragment == null) {
-            Fragment movieFragment = new HomeFragment();
+            Fragment homeFragment = new HomeFragment();
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.main_container, movieFragment, title)
+                    .add(R.id.main_container, homeFragment, title)
                     .commit();
-            DefaultFragment = movieFragment;
+            DefaultFragment = homeFragment;
         }
     }
 
@@ -197,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      */
     public void removeFragment(String title) {
         mFragmentManager = getSupportFragmentManager();
-        List<Fragment> fragments = mFragmentManager.getFragments();
+        @SuppressLint("RestrictedApi") List<Fragment> fragments = mFragmentManager.getFragments();
         if (fragments == null) {
             return;
         }
@@ -258,31 +255,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      */
     private void switchFragment(String title) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        if (title.equals(UIUtils.getString(this, R.string.nav_menu_home)) && Constants.CHANGELABEL_MOVIE) {
-            Fragment movieFragment = createFragmentByTitle(title);
+
+        //根据Tag判断是否已经开启了Fragment，如果开启了就直接复用，没开启就创建
+        Fragment fragment = mFragmentManager.findFragmentByTag(title);
+        if (fragment == null) {
             transaction.hide(DefaultFragment);
-            transaction.replace(R.id.main_container, movieFragment, title).commit();
-            DefaultFragment = movieFragment;
-        } else if (title.equals(UIUtils.getString(this, R.string.nav_menu_bookToReturn)) && Constants.CHANGELABEL_BOOK) {
-            Fragment bookFragment = createFragmentByTitle(title);
-            transaction.hide(DefaultFragment);
-            transaction.replace(R.id.main_container, bookFragment, title).commit();
-            DefaultFragment = bookFragment;
-        } else {
-            //根据Tag判断是否已经开启了Fragment，如果开启了就直接复用，没开启就创建
-            Fragment fragment = mFragmentManager.findFragmentByTag(title);
-            if (fragment == null) {
-                transaction.hide(DefaultFragment);
-                fragment = createFragmentByTitle(title);
-                transaction.add(R.id.main_container, fragment, title);
-                DefaultFragment = fragment;
-            } else if (fragment != null) {
-                transaction.hide(DefaultFragment).show(fragment);
-                DefaultFragment = fragment;
-            }
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    commit();
+            fragment = createFragmentByTitle(title);
+            transaction.add(R.id.main_container, fragment, title);
+            DefaultFragment = fragment;
+        } else if (fragment != null) {
+            transaction.hide(DefaultFragment).show(fragment);
+            DefaultFragment = fragment;
         }
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                commit();
+
     }
 
 
