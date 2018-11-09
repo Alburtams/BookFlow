@@ -1,10 +1,13 @@
 package com.hust.bookflow.activity;
 
+
+import android.app.Activity;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -47,6 +50,7 @@ import com.hust.bookflow.utils.PreferncesUtils;
 import com.hust.bookflow.utils.SpUtils;
 import com.hust.bookflow.utils.ToastUtils;
 import com.hust.bookflow.utils.UIUtils;
+import com.hust.bookflow.utils.UserUtils;
 import com.hust.bookflow.utils.jsoupUtils.GetNavImage;
 
 import java.util.ArrayList;
@@ -99,6 +103,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         } else {
             setDefaultNav();
         }
+        //SharedPreferences preferences = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
+        //String stuid= UserUtils.getStuID(preferences);
+        /*if (stuid.equals("")) {
+            // 未登录
+        }*/
     }
 
 

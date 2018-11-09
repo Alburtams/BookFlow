@@ -21,9 +21,11 @@ import com.hust.bookflow.adapter.SearchBookAdapter;
 import com.hust.bookflow.adapter.SearchMovieAdapter;
 import com.hust.bookflow.adapter.SpinnerAdapter;
 import com.hust.bookflow.adapter.base.BaseSearchAdapter;
+import com.hust.bookflow.model.bean.BookListBeans;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.SpinnerBean;
 import com.hust.bookflow.model.bean.SubjectsBean;
+import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
 import com.hust.bookflow.model.httputils.BookHttpMethods;
 import com.hust.bookflow.model.httputils.MovieHttpMethods;
 import com.hust.bookflow.utils.ToastUtils;
@@ -42,7 +44,6 @@ public class SearchActivity extends AppCompatActivity {
     private android.support.v7.widget.SearchView search;
     private Spinner spinner;
     private int SEARCH_NAME = 0;
-    private int SEARCH_BOOKID = 1;
     private int SEARCH_TAG = 0;
     private final int COUNT = 10;
     private int mStart = 0;
@@ -52,10 +53,10 @@ public class SearchActivity extends AppCompatActivity {
     private SearchBookAdapter mBookAdapter;
     private RecyclerView searchrv;
 
-    private Subscriber<List<SubjectsBean>> moviesub;
-    private Subscriber<List<BooksBean>> booksub;
+    //private Subscriber<List<BooksBean>> moviesub;
+    private Subscriber<List<BookListBeans>> booksub;
     private List<SubjectsBean> mMovieBean;
-    private List<BooksBean> mBookBean;
+    private List<BookListBeans> mBookBean;
     private RecyclerView.LayoutManager mLayoutManager;
     private View mFootView;
     private ProgressBar searchpb;
@@ -84,7 +85,6 @@ public class SearchActivity extends AppCompatActivity {
                 query(query);
                 return true;
             }
-
             //查询框文字发送发生变化
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -98,13 +98,12 @@ public class SearchActivity extends AppCompatActivity {
                 if (i == 0) {
                     SEARCH_TAG = SEARCH_NAME;
                 } else if (i == 1) {
-                    SEARCH_TAG = SEARCH_BOOKID;
+                    //SEARCH_TAG = SEARCH_BOOKID;
+                    SEARCH_TAG = SEARCH_NAME;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -113,21 +112,13 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(SearchActivity.this)) {
-                    if (SEARCH_TAG == SEARCH_NAME) {
-                        updateMovie();
-                        mFootView.setVisibility(View.VISIBLE);
-                        searchrv.scrollToPosition(mMovieAdapter.getItemCount() - 1);
-                    } else if (SEARCH_TAG == SEARCH_BOOKID) {
-                        updateBook();
-                        mFootView.setVisibility(View.VISIBLE);
-                        searchrv.scrollToPosition(mBookAdapter.getItemCount() - 1);
-                    }
-
+                    updateBook();
+                    mFootView.setVisibility(View.VISIBLE);
+                    searchrv.scrollToPosition(mMovieAdapter.getItemCount() - 1);
                 }
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-
         searchfab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,52 +130,24 @@ public class SearchActivity extends AppCompatActivity {
     private void updateBook() {
         if (mBookAdapter.getStart() == mStart) return;
         mStart = mBookAdapter.getStart();
-        booksub = new Subscriber<List<BooksBean>>() {
+        booksub = new Subscriber<List<BookListBeans>>() {
             @Override
             public void onCompleted() {
                 mFootView.setVisibility(View.GONE);
             }
-
             @Override
             public void onError(Throwable e) {
                 mFootView.setVisibility(View.GONE);
             }
-
             @Override
-            public void onNext(List<BooksBean> list) {
+            public void onNext(List<BookListBeans> list) {
                 if (!list.isEmpty()) {
                     mBookAdapter.addData(list);
                 }
             }
         };
-
-        BookHttpMethods.getInstance().getBookByQ(booksub, q, mStart, COUNT);
+        BookFlowHttpMethods.getInstance().getBookByName(booksub, q, mStart, COUNT);
     }
-
-    private void updateMovie() {
-        if (mMovieAdapter.getStart() == mStart) return;
-        mStart = mMovieAdapter.getStart();
-        moviesub = new Subscriber<List<SubjectsBean>>() {
-            @Override
-            public void onCompleted() {
-                mFootView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mFootView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNext(List<SubjectsBean> list) {
-                if (!list.isEmpty()) {
-                    mMovieAdapter.addData(list);
-                }
-            }
-        };
-        MovieHttpMethods.getInstance().getMovieByQ(moviesub, q, mStart, COUNT);
-    }
-
 
     private void initView() {
         SearchManager mSearchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -193,7 +156,7 @@ public class SearchActivity extends AppCompatActivity {
         search.setSubmitButtonEnabled(true);
         List<SpinnerBean> list = new ArrayList<>();
         list.add(new SpinnerBean("书名", R.drawable.search_movie));
-        list.add(new SpinnerBean("编号", R.drawable.search_book));
+        //list.add(new SpinnerBean("编号", R.drawable.search_book));
 
         SpinnerAdapter madapter = new SpinnerAdapter(this, list);
         spinner.setAdapter(madapter);
@@ -201,105 +164,50 @@ public class SearchActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         searchrv.setLayoutManager(mLayoutManager);
         mFootView = LayoutInflater.from(this).inflate(R.layout.item_footer, searchrv, false);
-
     }
 
     private void query(String query) {
-
-
-        if (SEARCH_TAG == 0) {
-            SearchMovie(query);
-        } else if (SEARCH_TAG == 1) {
-            SearchBook(query);
-        }
+        SearchByName(query);
         search.setQuery("", false);
         search.onActionViewCollapsed();
-
     }
 
-    private void SearchBook(String query) {
+    private void SearchByName(String query) {
         showProgressbar();
-
-        booksub = new Subscriber<List<BooksBean>>() {
+        booksub = new Subscriber<List<BookListBeans>>() {
             @Override
             public void onCompleted() {
                 closeProgressbar();
             }
-
             @Override
             public void onError(Throwable e) {
                 closeProgressbar();
                 ToastUtils.show(SearchActivity.this, "没有搜索到结果");
             }
-
             @Override
-            public void onNext(List<BooksBean> booksBeen) {
-                if (!booksBeen.isEmpty()) {
-                    mBookBean = booksBeen;
-                    initRecyclerView();
-                } else {
-                    ToastUtils.show(SearchActivity.this, "没有搜索到结果");
-                }
-
-            }
-        };
-
-        BookHttpMethods.getInstance().getBookByQ(booksub, query, 0, COUNT);
-    }
-
-    private void SearchMovie(String query) {
-        showProgressbar();
-        moviesub = new Subscriber<List<SubjectsBean>>() {
-            @Override
-            public void onCompleted() {
-                closeProgressbar();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                closeProgressbar();
-                ToastUtils.show(SearchActivity.this, "没有搜索到结果");
-            }
-
-            @Override
-            public void onNext(List<SubjectsBean> subjectsBeen) {
+            public void onNext(List<BookListBeans> subjectsBeen) {
                 if (!subjectsBeen.isEmpty()) {
-                    mMovieBean = subjectsBeen;
+                    mBookBean = subjectsBeen;
                     initRecyclerView();
                 } else {
                     ToastUtils.show(SearchActivity.this, "没有搜索到结果");
                 }
-
             }
         };
-
-        MovieHttpMethods.getInstance().getMovieByQ(moviesub, query, 0, COUNT);
+        BookFlowHttpMethods.getInstance().getBookByName(booksub, query,0,10);
     }
 
     private void initRecyclerView() {
         searchfab.setVisibility(View.VISIBLE);
-        if (SEARCH_TAG == SEARCH_NAME) {
-            mMovieAdapter = new SearchMovieAdapter(this, mMovieBean);
-            mMovieAdapter.setFooterView(mFootView);
-            searchrv.setAdapter(mMovieAdapter);
-            mMovieAdapter.setOnItemClickListener(new BaseSearchAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String id, String url) {
-                    MovieDetailsActivity.toActivity(SearchActivity.this, id, url);
-                }
-            });
-        } else if (SEARCH_TAG == SEARCH_BOOKID) {
-            mBookAdapter = new SearchBookAdapter(this, mBookBean);
-            mBookAdapter.setFooterView(mFootView);
-            searchrv.setAdapter(mBookAdapter);
-            mBookAdapter.setOnItemClickListener(new BaseSearchAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String id, String url) {
-                    BookDetailsActivity.toActivity(SearchActivity.this, id, url);
-                }
-            });
-        }
-
+        mBookAdapter = new SearchBookAdapter(this, mBookBean);
+        mBookAdapter.setFooterView(mFootView);
+        searchrv.setAdapter(mBookAdapter);
+        mBookAdapter.setOnItemClickListener(new BaseSearchAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String id, String url) {
+                BookDetailsActivity.toActivity(SearchActivity.this, id, url);
+            }
+        });
     }
 
     private void showProgressbar() {
@@ -313,7 +221,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if (booksub!=null) booksub.unsubscribe();
-        if (moviesub!=null)moviesub.unsubscribe();
         super.onDestroy();
     }
 }

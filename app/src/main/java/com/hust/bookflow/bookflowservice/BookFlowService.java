@@ -5,6 +5,7 @@ import com.hust.bookflow.model.bean.BookListBeans;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.HomeHttpResult;
 import com.hust.bookflow.model.bean.BookListHttpResult;
+import com.hust.bookflow.model.bean.MessageBean;
 
 import java.util.List;
 
@@ -18,12 +19,12 @@ import rx.Observable;
 public interface BookFlowService {
 
     @FormUrlEncoded
-    @POST("login")
-    Observable<Boolean> login(@Field("stu_id") String stuId, @Field("passwd") String passwd);
+    @POST("user/login")
+    Observable<MessageBean> login(@Field("stu_id") String stuId, @Field("passwd") String passwd);
 
     @FormUrlEncoded
-    @POST("register")
-    Observable<Boolean> register(@Field("stud_id") String stuId, @Field("stu_name") String stuName, @Field("scho_name") String schoName, @Field("email_addr") String emailAddr);
+    @POST("user/register")
+    Observable<MessageBean> register(@Field("stu_id") String stuId, @Field("stu_name") String stuName,@Field("passwd") String passwd);
 
     // 首页图书列表
     @GET("list")
@@ -33,13 +34,9 @@ public interface BookFlowService {
     @GET("book")
     Observable<BookDetailsBean> getBookDetails(@Query("book_id") String bookId);
 
-    // 按bookid搜索
-    @GET("search")
-    Observable<BookListHttpResult<List<BookListBeans>>> searchById(@Query("book_id") String bookId);
-
     // 按name搜索
     @GET("search")
-    Observable<BookListHttpResult<List<BookListBeans>>> searchByName(@Query("book_name") String bookName);
+    Observable<HomeHttpResult<List<BookListBeans>>> searchByName(@Query("book_name") String bookName,@Query("start") int start, @Query("count") int count);
 
     @FormUrlEncoded
     @POST("borrow")

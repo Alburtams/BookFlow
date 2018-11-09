@@ -70,26 +70,26 @@ public abstract class BaseSearchAdapter extends RecyclerView.Adapter {
         public CardView item_search_card;
         public TextView item_search_detail;
         public ImageView item_search_iv;
-        public RatingBar item_search_rating;
-        public TextView item_search_ratnum;
+//        public RatingBar item_search_rating;
+//        public TextView item_search_ratnum;
         public ImageView item_search_switch;
         public TextView item_search_title;
         public TextView item_search_tv1;
         public TextView item_search_tv2;
-        public TextView item_search_tv3;
+//        public TextView item_search_tv3;
 
         public Holder(View itemView) {
             super(itemView);
             item_search_card = (CardView) itemView.findViewById(R.id.item_search_card);
             item_search_detail = (TextView) itemView.findViewById(R.id.item_search_detail);
             item_search_iv = (ImageView) itemView.findViewById(R.id.item_search_iv);
-            item_search_rating = (RatingBar) itemView.findViewById(R.id.item_search_rating);
-            item_search_ratnum = (TextView) itemView.findViewById(R.id.item_search_ratnum);
+//            item_search_rating = (RatingBar) itemView.findViewById(R.id.item_search_rating);
+//            item_search_ratnum = (TextView) itemView.findViewById(R.id.item_search_ratnum);
             item_search_switch = (ImageView) itemView.findViewById(R.id.item_search_switch);
             item_search_title = (TextView) itemView.findViewById(R.id.item_search_title);
             item_search_tv1 = (TextView) itemView.findViewById(R.id.item_search_tv1);
             item_search_tv2 = (TextView) itemView.findViewById(R.id.item_search_tv2);
-            item_search_tv3 = (TextView) itemView.findViewById(R.id.item_search_tv3);
+//            item_search_tv3 = (TextView) itemView.findViewById(R.id.item_search_tv3);
 
         }
     }
