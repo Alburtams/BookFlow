@@ -81,7 +81,6 @@
                         android:lines="1"
                         android:ellipsize="end"
                         android:textSize="12sp"
-                        android:text="作者：邹均/张海宁/唐屹/李磊"
                         />
 
                     <TextView
@@ -92,7 +91,6 @@
                         android:lines="1"
                         android:ellipsize="end"
                         android:textSize="12sp"
-                        android:text="出版社：机械工业出版社"
                         />
 
                     <LinearLayout

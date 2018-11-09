@@ -1,6 +1,7 @@
 package com.hust.bookflow.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -27,6 +28,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -35,15 +37,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.fragment.HomeFragment;
-import com.hust.bookflow.fragment.MovieFragment;
 import com.hust.bookflow.fragment.SettingFragment;
 import com.hust.bookflow.fragment.factory.FragmentFactory;
-import com.hust.bookflow.fragment.pagerfragment.MoviePagerFragment;
 import com.hust.bookflow.utils.Constant;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.PreferncesUtils;
@@ -75,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private final LocalBroadcastReceiver localReceiver = new LocalBroadcastReceiver();
     private List<String> navList = new ArrayList<>();
     private mAsyncTask mAsy;
+    private TextView nav_header_logintxt;
+    private MenuItem nav_header_logout;
+    private SharedPreferences userData;
+    private String stuId;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -138,7 +141,26 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         nav_header_img = (ImageView) headerView.findViewById(R.id.nav_header_img);
         nav_header_title = (TextView) headerView.findViewById(R.id.nav_header_title);
         nav_header_button=(ImageButton)headerView.findViewById(R.id.nav_header_button);
+        nav_header_logintxt = (TextView) headerView.findViewById(R.id.nav_header_logintxt);
+
+        nav_header_logout = mainnav.getMenu().findItem(R.id.nav_menu_exit);
+
         nav_header_button.setOnClickListener(this);
+
+        userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
+        stuId = UserUtils.getStuID(userData);
+        if (!stuId.equals("")) {
+            nav_header_button.setVisibility(View.GONE);
+            nav_header_logintxt.setText(stuId);
+            nav_header_logout.setVisible(true);
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.action_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -158,12 +180,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mFragmentManager = getSupportFragmentManager();
         DefaultFragment = mFragmentManager.findFragmentByTag(title);
         if (DefaultFragment == null) {
-            Fragment movieFragment = new HomeFragment();
+            Fragment homeFragment = new HomeFragment();
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.main_container, movieFragment, title)
+                    .add(R.id.main_container, homeFragment, title)
                     .commit();
-            DefaultFragment = movieFragment;
+            DefaultFragment = homeFragment;
         }
     }
 
@@ -172,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      */
     public void removeFragment(String title) {
         mFragmentManager = getSupportFragmentManager();
-        List<Fragment> fragments = mFragmentManager.getFragments();
+        @SuppressLint("RestrictedApi") List<Fragment> fragments = mFragmentManager.getFragments();
         if (fragments == null) {
             return;
         }
@@ -205,10 +227,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 menuItem.setChecked(true);
                 maindrawerlayout.closeDrawers();
                 String title = (String) menuItem.getTitle();
-                main_toolbar.setTitle(title);
-                //根据menu的Title开启Fragment
+                if(title.equals(getString(R.string.string_exit))) {
+                    logout();
+                } else {
+                    boolean a = title.equals(R.string.nav_menu_bookToReturn);
+                    boolean b = stuId.equals("");
+                    if(title.equals(getString(R.string.nav_menu_bookToReturn)) && stuId.equals("")) {
+                        ToastUtils.show(MainActivity.this, "请先登录");
+                        LoginActivity.toActivity(MainActivity.this);
+                    } else {
+                        main_toolbar.setTitle(title);
+                        //根据menu的Title开启Fragment
 
-                switchFragment(title);
+                        switchFragment(title);
+                    }
+                }
 
                 return true;
             }
@@ -222,31 +255,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      */
     private void switchFragment(String title) {
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        if (title.equals(UIUtils.getString(this, R.string.nav_menu_home)) && Constants.CHANGELABEL_MOVIE) {
-            Fragment movieFragment = createFragmentByTitle(title);
+
+        //根据Tag判断是否已经开启了Fragment，如果开启了就直接复用，没开启就创建
+        Fragment fragment = mFragmentManager.findFragmentByTag(title);
+        if (fragment == null) {
             transaction.hide(DefaultFragment);
-            transaction.replace(R.id.main_container, movieFragment, title).commit();
-            DefaultFragment = movieFragment;
-        } else if (title.equals(UIUtils.getString(this, R.string.nav_menu_bookToReturn)) && Constants.CHANGELABEL_BOOK) {
-            Fragment bookFragment = createFragmentByTitle(title);
-            transaction.hide(DefaultFragment);
-            transaction.replace(R.id.main_container, bookFragment, title).commit();
-            DefaultFragment = bookFragment;
-        } else {
-            //根据Tag判断是否已经开启了Fragment，如果开启了就直接复用，没开启就创建
-            Fragment fragment = mFragmentManager.findFragmentByTag(title);
-            if (fragment == null) {
-                transaction.hide(DefaultFragment);
-                fragment = createFragmentByTitle(title);
-                transaction.add(R.id.main_container, fragment, title);
-                DefaultFragment = fragment;
-            } else if (fragment != null) {
-                transaction.hide(DefaultFragment).show(fragment);
-                DefaultFragment = fragment;
-            }
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    commit();
+            fragment = createFragmentByTitle(title);
+            transaction.add(R.id.main_container, fragment, title);
+            DefaultFragment = fragment;
+        } else if (fragment != null) {
+            transaction.hide(DefaultFragment).show(fragment);
+            DefaultFragment = fragment;
         }
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                commit();
+
     }
 
 
@@ -299,6 +322,14 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 break;
         }
         return false;
+    }
+
+    private void logout() {
+        userData.edit().clear().apply();
+        nav_header_button.setVisibility(View.VISIBLE);
+        nav_header_logintxt.setText(R.string.string_nav_login);
+        nav_header_logout.setVisible(false);
+        ToastUtils.show(MainActivity.this, "您已成功退出登录");
     }
 
     /**
@@ -360,26 +391,14 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onReceive(Context context, Intent intent) {
-            Boolean isopen = PreferncesUtils.getBoolean(context, Constants.PREF_KEY_AUTO_IMG, false);
-            if (isopen == true) {
-                //开启自动更新图片
-                if (!navList.isEmpty()) {
-                    Glide.with(MainActivity.this)
-                            .load(navList.get(1))
-                            .into(nav_header_img);
-                    nav_header_title.setText("每日一图：" + navList.get(0));
-                }
-            } else {
-                //关闭自动更新图
-                setDefaultNav();
-            }
+            setDefaultNav();
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void setDefaultNav() {
         nav_header_img.setImageDrawable(getDrawable(R.drawable.nav_bg));
-        nav_header_title.setText("简豆，简而美的APP");
+        nav_header_title.setText("书上链，恋上书");
     }
 
     @Override
@@ -397,19 +416,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     class mAsyncTask extends AsyncTask<Void,Void,List<String>> {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(List<String> list) {
 
-
-                if (PreferncesUtils.getBoolean(MainActivity.this, Constants.PREF_KEY_AUTO_IMG, false)&&!list.isEmpty()) {
-
-                    Glide.with(MainActivity.this)
-                            .load(list.get(1))
-                            .into(nav_header_img);
-                    nav_header_title.setText("每日一图：" + list.get(0));
-                } else {
-                    setDefaultNav();
-                }
+            setDefaultNav();
 
         }
 

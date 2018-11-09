@@ -10,27 +10,9 @@ import java.util.List;
 
 public class BooksBean implements Serializable {
 
-    private String bookId;
-    private String bookName;
+    private String book_id;
+    private String book_name;
     private String picture;
-    private String author;
-    private String press; //出版社
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(String bookId) {
-        this.bookId = bookId;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
 
     public String getPicture() {
         return picture;
@@ -40,19 +22,20 @@ public class BooksBean implements Serializable {
         this.picture = picture;
     }
 
-    public String getAuthor() {
-        return author;
+
+    public String getBook_name() {
+        return book_name;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setBook_name(String book_name) {
+        this.book_name = book_name;
     }
 
-    public String getPress() {
-        return press;
+    public String getBook_id() {
+        return book_id;
     }
 
-    public void setPress(String press) {
-        this.press = press;
+    public void setBook_id(String book_id) {
+        this.book_id = book_id;
     }
 }

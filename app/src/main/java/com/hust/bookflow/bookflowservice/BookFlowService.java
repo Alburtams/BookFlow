@@ -28,7 +28,7 @@ public interface BookFlowService {
 
     // 首页图书列表
     @GET("list")
-    Observable<HomeHttpResult<List<BooksBean>>> getHomeList(@Query("count") int count);
+    Observable<HomeHttpResult<List<BooksBean>>> getHomeList(@Query("start") int start, @Query("count") int count);
 
     // 图书详情
     @GET("book")
@@ -36,7 +36,7 @@ public interface BookFlowService {
 
     // 按name搜索
     @GET("search")
-    Observable<HomeHttpResult<List<BookListBeans>>> searchByName(@Query("book_name") String bookName,@Query("start") int start, @Query("count") int count);
+    Observable<BookListHttpResult<List<BookListBeans>>> searchByName(@Query("book_name") String bookName,@Query("start") int start, @Query("count") int count);
 
     @FormUrlEncoded
     @POST("borrow")

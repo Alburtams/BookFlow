@@ -12,17 +12,11 @@ import android.view.ViewGroup;
 
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
-import com.hust.bookflow.activity.ActorDetailsActivity;
 import com.hust.bookflow.activity.BookDetailsActivity;
-import com.hust.bookflow.activity.MovieDetailsActivity;
-import com.hust.bookflow.adapter.CollectionActorAdapter;
 import com.hust.bookflow.adapter.CollectionBookAdapter;
-import com.hust.bookflow.adapter.CollectionMovieAdapter;
 import com.hust.bookflow.adapter.base.BaseCollectionAdapter;
-import com.hust.bookflow.model.db.Actor_db;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
-import com.hust.bookflow.model.db.Movie_db;
 import com.hust.bookflow.model.dbinterface.DbObservrt;
 import com.hust.bookflow.utils.Constants;
 import com.hust.bookflow.utils.ToastUtils;
@@ -45,18 +39,18 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
     private GreenDaoUtils utils;
     private RecyclerView page_collection_rv;
 
-    private CollectionMovieAdapter movieadapter;
+
     private CollectionBookAdapter mBookAdapter;
-    private CollectionActorAdapter mActorAdapter;
 
 
-    private List<Movie_db> moviedata;
+
+
     private List<Book_db> bookdata;
-    private List<Actor_db> actordata;
 
-    private Subscriber<List<Movie_db>> mMovieSubscriber;
+
+
     private Subscriber<List<Book_db>> mBookSubscriber;
-    private Subscriber<List<Actor_db>> mActorSubscriber;
+
 
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -109,11 +103,11 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
 
 
         if (title.equals(Constants.COLLECTION_TYPE[0])) {
-            getMovieByDatabase();
+
         } else if (title.equals(Constants.COLLECTION_TYPE[1])) {
             getBookByDatabase();
         } else if (title.equals(Constants.COLLECTION_TYPE[2])) {
-            getActorByDatabase();
+
         }
 
 
@@ -123,15 +117,7 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         if (title.equals(Constants.COLLECTION_TYPE[0])) {
-            movieadapter = new CollectionMovieAdapter(getActivity(), moviedata);
-            page_collection_rv.setLayoutManager(mLayoutManager);
-            page_collection_rv.setAdapter(movieadapter);
-            movieadapter.setOnItemClickListener(new BaseCollectionAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String id, String url) {
-                    MovieDetailsActivity.toActivity(getActivity(), id, url);
-                }
-            });
+
         } else if (title.equals(Constants.COLLECTION_TYPE[1])) {
             mBookAdapter = new CollectionBookAdapter(getActivity(),bookdata);
             page_collection_rv.setLayoutManager(mLayoutManager);
@@ -143,48 +129,8 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
                 }
             });
         }else if (title.equals(Constants.COLLECTION_TYPE[2])){
-            mActorAdapter = new CollectionActorAdapter(getActivity(),actordata);
-            page_collection_rv.setLayoutManager(mLayoutManager);
-            page_collection_rv.setAdapter(mActorAdapter);
-            mActorAdapter.setOnItemClickListener(new BaseCollectionAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String id, String url) {
-                    ActorDetailsActivity.toActivity(getActivity(),id,url);
-                }
-            });
+
         }
-
-
-    }
-
-    /**
-     * 异步读取movie
-     */
-    public void getMovieByDatabase() {
-        mMovieSubscriber = new Subscriber<List<Movie_db>>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(getActivity(), "读取数据失败");
-            }
-
-            @Override
-            public void onNext(List<Movie_db> list) {
-                if (!list.isEmpty()) {
-                    moviedata = list;
-                    initView();
-                }
-            }
-        };
-
-        Observable.just(utils.queryAllMovie())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mMovieSubscriber);
 
 
     }
@@ -218,49 +164,14 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
                 .subscribe(mBookSubscriber);
     }
 
-    /**
-     * 异步读取Actor
-     */
-    public void getActorByDatabase() {
-        mActorSubscriber = new Subscriber<List<Actor_db>>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(getActivity(), "读取数据失败");
-            }
-
-            @Override
-            public void onNext(List<Actor_db> actor_dbs) {
-                if (!actor_dbs.isEmpty()) {
-                    actordata = actor_dbs;
-                    initView();
-                }
-            }
-        };
-        Observable.just(utils.queryAllActor())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mActorSubscriber);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (mSubscriber != null) {
             mSubscriber.unsubscribe();
         }
-        if (mMovieSubscriber != null) {
-            mMovieSubscriber.unsubscribe();
-        }
         if (mBookSubscriber != null) {
             mBookSubscriber.unsubscribe();
-        }
-        if (mActorSubscriber != null) {
-            mActorSubscriber.unsubscribe();
         }
         utils.detach(this);
     }
@@ -269,7 +180,7 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
     @Override
     public void updateMovie() {
         if (title.equals(Constants.COLLECTION_TYPE[0])) {
-            getMovieByDatabase();
+
         }
     }
 
@@ -283,7 +194,7 @@ public class CollectionPageFragment extends Fragment implements DbObservrt {
     @Override
     public void updateActor() {
         if (title.equals(Constants.COLLECTION_TYPE[2])) {
-            getActorByDatabase();
+
         }
     }
 }

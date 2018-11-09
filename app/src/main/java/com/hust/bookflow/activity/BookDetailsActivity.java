@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -45,8 +46,6 @@ import com.bumptech.glide.request.target.Target;
 import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
-import com.hust.bookflow.adapter.LikeMovieAdapter;
-import com.hust.bookflow.adapter.base.BaseRecyclerAdapter;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
@@ -59,6 +58,7 @@ import com.hust.bookflow.utils.SnackBarUtils;
 import com.hust.bookflow.utils.StringUtils;
 import com.hust.bookflow.utils.ToastUtils;
 import com.hust.bookflow.utils.UIUtils;
+import com.hust.bookflow.utils.UserUtils;
 import com.hust.bookflow.utils.jsoupUtils.GetBookInfo;
 
 import java.text.SimpleDateFormat;
@@ -77,7 +77,7 @@ import static com.hust.bookflow.R.drawable.collection_false;
  * Email:13435500980@163.com
  */
 
-public class BookDetailsActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
+public class BookDetailsActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ImageView atvbookiv;
     private android.support.v7.widget.Toolbar atvbooktoolbar;
@@ -130,7 +130,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private List<String> LikeBookTitle;
     private List<String> LikeBookImage;
     private List<String> LikeBookId;
-    private LikeMovieAdapter mLikeAdapter;
+
     private TextView btndialog_title;
     private TextView btndialog_cate;
     private ImageView btndialog_close;
@@ -139,6 +139,9 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private GreenDaoUtils mDaoUtils;
 
     private Button book_borrow_btn;
+
+    private SharedPreferences userData;
+    private String stuId;
 
     public static void toActivity(Activity activity, String id, String img) {
         Intent intent = new Intent(activity, BookDetailsActivity.class);
@@ -207,6 +210,11 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             menu.getItem(0).setIcon(R.drawable.collection_false);
             isCollection = false;
         }
+
+        //获取当前登录用户的信息
+        userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
+        stuId= UserUtils.getStuID(userData);
+
     }
 
 
@@ -253,7 +261,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             @Override
             public void onCompleted() {
                 atvbookrefresh.setRefreshing(false);
-                BookDetailsBean bookDetailsBean =  mBookBean;
             }
 
             @Override
@@ -434,13 +441,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         });
         atvbookappbar.addOnOffsetChangedListener(this);
 
-        atvbookrefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initData();
-                initView();
-            }
-        });
+        atvbookrefresh.setOnRefreshListener(this);
 
         atv_book_iv_author.setOnClickListener(this);
         atv_book_iv_list.setOnClickListener(this);
@@ -479,7 +480,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             ActivityCompat.requestPermissions(BookDetailsActivity.this, new String[]{Manifest.permission.CAMERA}, Constant.REQ_PERM_CAMERA);
             return;
         }
-        String stuId = "sdfsdf";
         // 二维码扫码
         Bundle bundle = new Bundle();
         bundle.putString("flag","2");
@@ -503,9 +503,14 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 WebViewActivity.toWebActivity(BookDetailsActivity.this, mBookBean.getAlt(), mBookBean.getTitle());
                 break;*/
             case R.id.book_borrow_btn:
-                // TODO 进入扫码界面
-                startQrCode();
-                ToastUtils.show(this, "借书");
+                if (stuId.equals("")) {
+                    ToastUtils.show(BookDetailsActivity.this, "请先登录");
+                    LoginActivity.toActivity(BookDetailsActivity.this);
+                } else {
+                    // TODO 进入扫码界面
+                    startQrCode();
+                    ToastUtils.show(this, "借书");
+                }
                 break;
         }
     }
@@ -575,6 +580,12 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 
     }
 
+    @Override
+    public void onRefresh() {
+        initData();
+        initView();
+    }
+
     class AsyncTask extends android.os.AsyncTask {
 
         @Override
@@ -618,19 +629,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 atvbookrvlike.setVisibility(View.VISIBLE);
                 atvbookrvlike.setLayoutManager(new LinearLayoutManager(BookDetailsActivity.this,
                         LinearLayoutManager.HORIZONTAL, false));
-                mLikeAdapter = new LikeMovieAdapter(BookDetailsActivity.this, LikeBookTitle, LikeBookImage, LikeBookId);
-                atvbookrvlike.setAdapter(mLikeAdapter);
-
-                mLikeAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(String id, String url) {
-                        if (id != null && url != null) {
-                            BookDetailsActivity.toActivity(BookDetailsActivity.this, id, url);
-                        } else {
-                            SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.error));
-                        }
-                    }
-                });
             } else {
                 atvbookliketitle.setText(UIUtils.getString(BookDetailsActivity.this, R.string.error));
             }
@@ -646,6 +644,12 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             mAsyncTask.cancel(true);
         }
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
     }
 
     @Override
