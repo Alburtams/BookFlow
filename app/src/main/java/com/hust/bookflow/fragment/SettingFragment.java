@@ -61,17 +61,17 @@ public class SettingFragment extends PreferenceFragmentCompat implements Prefere
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.preferences);
-        ThemePreference = (ListPreference) findPreference(PREF_KEY_THEME);
+        /*ThemePreference = (ListPreference) findPreference(PREF_KEY_THEME);
         ThemePreference.setOnPreferenceChangeListener(listener);
 
         ImagePreference = (CheckBoxPreference) findPreference(PREF_KEY_AUTO_IMG);
-        ImagePreference.setOnPreferenceChangeListener(listener);
+        ImagePreference.setOnPreferenceChangeListener(listener);*/
 
         Feedback = findPreference(PREF_KEY_FEEDBACK);
         Feedback.setOnPreferenceClickListener(this);
 
-        Protocol = findPreference(PREF_KEY_PROTOCOL);
-        Protocol.setOnPreferenceClickListener(this);
+        /*Protocol = findPreference(PREF_KEY_PROTOCOL);
+        Protocol.setOnPreferenceClickListener(this);*/
 
         Cache = findPreference(PREF_KEY_CACHE);
         Cache.setOnPreferenceClickListener(this);
@@ -79,15 +79,14 @@ public class SettingFragment extends PreferenceFragmentCompat implements Prefere
     }
 
     private void initPreferences() {
-        String nowtheme = PreferncesUtils.getString(getActivity(), Constants.PREF_KEY_THEME, "1");
+        /*String nowtheme = PreferncesUtils.getString(getActivity(), Constants.PREF_KEY_THEME, "1");
         if (nowtheme.equals("1")) {
             ThemePreference.setSummary("白天");
         } else {
             ThemePreference.setSummary("晚上");
-        }
+        }*/
 
-
-            Cache.setSummary(ClearCacheUtils.getCacheSize());
+        Cache.setSummary(ClearCacheUtils.getCacheSize());
 
     }
 
@@ -99,9 +98,9 @@ public class SettingFragment extends PreferenceFragmentCompat implements Prefere
                 Intent emailintent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "13435500980@163.com", null));
                 startActivity(Intent.createChooser(emailintent, "请选择邮件客户端"));
                 break;
-            case PREF_KEY_PROTOCOL:
+            /*case PREF_KEY_PROTOCOL:
                 showApacheLicenseDialog();
-                break;
+                break;*/
             case PREF_KEY_CACHE:
                 ClearCacheUtils.deleteDir(getActivity().getCacheDir());
                 Cache.setSummary(ClearCacheUtils.getCacheSize());
@@ -111,7 +110,7 @@ public class SettingFragment extends PreferenceFragmentCompat implements Prefere
         return true;
     }
 
-    private void showApacheLicenseDialog() {
+    /*private void showApacheLicenseDialog() {
         new LicensesDialog
                 .Builder(getActivity())
                 .setNotices(R.raw.notices)
@@ -119,5 +118,5 @@ public class SettingFragment extends PreferenceFragmentCompat implements Prefere
                 .setDividerColorId(R.color.colorPrimary)
                 .build()
                 .showAppCompat();
-    }
+    }*/
 }
