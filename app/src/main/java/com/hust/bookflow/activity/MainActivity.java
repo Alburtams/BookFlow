@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private TextView nav_header_logintxt;
     private MenuItem nav_header_logout;
     private SharedPreferences userData;
+    private String stuId;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -150,10 +151,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         nav_header_button.setOnClickListener(this);
 
         userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
-        String stuid= UserUtils.getStuID(userData);
-        if (!stuid.equals("")) {
+        stuId = UserUtils.getStuID(userData);
+        if (!stuId.equals("")) {
             nav_header_button.setVisibility(View.GONE);
-            nav_header_logintxt.setText(stuid);
+            nav_header_logintxt.setText(stuId);
             nav_header_logout.setVisible(true);
         }
 
@@ -232,10 +233,17 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 if(title.equals(getString(R.string.string_exit))) {
                     logout();
                 } else {
-                    main_toolbar.setTitle(title);
-                    //根据menu的Title开启Fragment
+                    boolean a = title.equals(R.string.nav_menu_bookToReturn);
+                    boolean b = stuId.equals("");
+                    if(title.equals(getString(R.string.nav_menu_bookToReturn)) && stuId.equals("")) {
+                        ToastUtils.show(MainActivity.this, "请先登录");
+                        LoginActivity.toActivity(MainActivity.this);
+                    } else {
+                        main_toolbar.setTitle(title);
+                        //根据menu的Title开启Fragment
 
-                    switchFragment(title);
+                        switchFragment(title);
+                    }
                 }
 
                 return true;

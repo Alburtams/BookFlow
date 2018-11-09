@@ -317,9 +317,9 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
             //详情
             borrowBook(bookId, stuId);
             if (isBorrowedSuc) {
-                ToastUtils.show(this, "借书成功");
+                ToastUtils.show(CaptureActivity.this, "借书成功");
             } else {
-                ToastUtils.show(this, "借书失败");
+                ToastUtils.show(CaptureActivity.this, "借书失败");
             }
         }
         finish();

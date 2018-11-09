@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(RegisterActivity.this, messageBean.getErrMsg(), Toast.LENGTH_LONG).show();
+                        ToastUtils.show(RegisterActivity.this, "注册失败" + messageBean.getErrMsg());
                     }
                 } else {
                     ToastUtils.show(RegisterActivity.this, "注册失败");
