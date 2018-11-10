@@ -42,11 +42,11 @@
             android:lines="1"
             android:ellipsize="end"
             android:textColor="#4b4e50"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="@string/string_nav_login"
             android:textStyle="bold"
             android:layout_gravity="bottom"
             android:layout_marginBottom="30dp"
-            android:layout_marginLeft="88dp"/>
+            android:layout_marginLeft="83dp"/>
 
 </FrameLayout>

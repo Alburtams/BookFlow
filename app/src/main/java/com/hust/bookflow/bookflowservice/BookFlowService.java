@@ -49,4 +49,7 @@ public interface BookFlowService {
     @GET("borrowed")
     Observable<BookListHttpResult<List<BookListBeans>>> getBorrowed(@Query("stu_id") String stuId);
 
+    @GET("book_exist")
+    Observable<Boolean> isBookExist(@Query("book_id") String bookId);
+
 }

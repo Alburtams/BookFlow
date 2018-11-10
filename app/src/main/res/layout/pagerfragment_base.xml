@@ -31,6 +31,7 @@
         app:layout_anchor="@id/pager_base_rv"
         app:layout_anchorGravity="bottom|right"
         app:layout_behavior="com.hust.bookflow.view.ScrollAwareFABBehavior"
+        android:visibility="gone"
         />
 
 
