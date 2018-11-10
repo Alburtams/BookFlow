@@ -193,7 +193,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        searchfab.setVisibility(View.VISIBLE);
+//        searchfab.setVisibility(View.VISIBLE);
         mBookAdapter = new SearchBookAdapter(this, mBookBean);
         mBookAdapter.setFooterView(mFootView);
         searchrv.setAdapter(mBookAdapter);
