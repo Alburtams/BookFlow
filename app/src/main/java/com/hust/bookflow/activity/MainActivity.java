@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
         stuId = UserUtils.getStuID(userData);
         if (!stuId.equals("")) {
-            nav_header_button.setVisibility(View.GONE);
+            nav_header_button.setEnabled(false);
             nav_header_logintxt.setText(stuId);
             nav_header_logout.setVisible(true);
         }
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     private void logout() {
         userData.edit().clear().apply();
-        nav_header_button.setVisibility(View.VISIBLE);
+        nav_header_button.setEnabled(true);
         nav_header_logintxt.setText(R.string.string_nav_login);
         nav_header_logout.setVisible(false);
         ToastUtils.show(MainActivity.this, "您已成功退出登录");
