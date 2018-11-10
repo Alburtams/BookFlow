@@ -173,6 +173,20 @@ public class BookFlowHttpMethods {
                 .subscribe(subscriber);
     }
 
+    public void isBookExist(Subscriber<Boolean> subscriber, String bookId) {
+        bfService.isBookExist(bookId)
+                .onErrorReturn(new Func1<Throwable, Boolean>() {
+                    @Override
+                    public Boolean call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
     private class HttpResultFunc<T> implements Func1<HomeHttpResult<T>, T> {
         @Override
         public T call(HomeHttpResult<T> tHomeHttpResult) {

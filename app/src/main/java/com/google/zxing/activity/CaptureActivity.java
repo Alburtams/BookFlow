@@ -91,8 +91,10 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
 
     private Subscriber<Boolean> borrowBookSub;
     private Boolean isBorrowedSuc;
+    private Subscriber<Boolean> isBookExistSub;
 
-//    private Handler msgHandler;
+    private Handler msgHandler;
+    private String scanResult;
 
 
     //	private Button cancelScanButton;
@@ -140,17 +142,17 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
             return;
         }
 
-        /*msgHandler = new Handler() {
+        msgHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if(msg.arg1 == 1) {
-                    ToastUtils.show(CaptureActivity.this, "借书成功");
+
                 } else {
-                    ToastUtils.show(CaptureActivity.this, "借书失败");
+                    ToastUtils.show(CaptureActivity.this, "当前扫描的图书不存在");
                 }
             }
-        };*/
+        };
 
     }
 
@@ -331,8 +333,8 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     private void manage(String resultString) {
         if(flag.equals("1")) {
             //首页
-            BookDetailsActivity.toActivity(CaptureActivity.this, resultString, null);
-            finish();
+            toBooks(resultString);
+            scanResult = resultString;
         } else if (flag.equals("2")) {
             //详情
             if (bookId.equals(resultString)) {
@@ -342,6 +344,35 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
                 ToastUtils.show(CaptureActivity.this, "请扫描和要借阅图书相对应的二维码");
             }
         }
+    }
+
+    private void toBooks(final String bookId) {
+        isBookExistSub = new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Message msg = Message.obtain();
+                msg.arg1 = 0;
+                msgHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                Message msg = Message.obtain();
+                msg.arg1 = aBoolean ? 1 : 0;
+                msgHandler.sendMessage(msg);
+                if(aBoolean) {
+                    BookDetailsActivity.toActivity(CaptureActivity.this, bookId, null);
+                    finish();
+                }
+            }
+        };
+
+        BookFlowHttpMethods.getInstance().isBookExist(isBookExistSub, bookId);
     }
 
     private void borrowBook(String bookId, String stuId) {
