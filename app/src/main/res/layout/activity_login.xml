@@ -8,12 +8,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/login_bg"
     tools:context="com.hust.bookflow.activity.LoginActivity">
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/atv_book_coorl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:colorBackground">
+        >
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/login_progress"
@@ -91,7 +92,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="登录"
-                android:textStyle="bold" />
+                android:textColor="#ffff"
+                android:textSize="26dp"
+                android:background="#0fd4db"
+                />
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -99,6 +103,9 @@
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textColor="#ffff"
         android:text="注册" />
 
     <TextView
@@ -106,6 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="忘记密码？"
+        android:visibility="gone"
         android:layout_alignParentRight="true"/>
 </RelativeLayout>
         </LinearLayout>

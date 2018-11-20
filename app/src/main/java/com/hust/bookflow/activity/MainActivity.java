@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         if (title.equals(Constants.SETTING)) {
             SettingFragment mSettingFragment = new SettingFragment();
             return mSettingFragment;
-        } else {
+        }else {
             Fragment fragment = FragmentFactory.getFragment(title);
             return fragment;
         }
