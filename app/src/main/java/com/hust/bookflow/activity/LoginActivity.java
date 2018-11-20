@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.hust.bookflow.R;
 import com.hust.bookflow.model.bean.MessageBean;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
 import com.hust.bookflow.utils.SnackBarUtils;
+import com.hust.bookflow.utils.ToastUtils;
 import com.hust.bookflow.utils.UIUtils;
 import com.hust.bookflow.utils.UserUtils;
 
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private ImageButton nav_header_button;
     private TextView nav_header_logintxt;
+    private ProgressBar loginProgBar;
 
     //private int mflag;
 
@@ -78,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password);
         //mflag=0;
         preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
+        loginProgBar = (ProgressBar) findViewById(R.id.login_progress);
 
         remember_pwd.setChecked(true);//默认记住密码
 
@@ -153,14 +158,17 @@ public class LoginActivity extends AppCompatActivity {
         password = mPasswordView.getText().toString();
 
         if (!TextUtils.isEmpty(stuid) && !TextUtils.isEmpty(password)) {
+            showProgressbar();
             mSubscriber = new Subscriber<MessageBean>() {
                 @Override
                 public void onCompleted() {
+                    closeProgressbar();
                     MessageBean a = mmessageBean;
                 }
 
                 @Override
                 public void onError(Throwable e) {
+                    closeProgressbar();
                     MessageBean a = mmessageBean;
                 }
 
@@ -175,17 +183,14 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("password", password);
                                 editor.putBoolean("rem_isCheck", remember_pwd.isChecked());
                                 editor.putBoolean("auto_isCheck", auto_login.isChecked());
-                                editor.commit();
+                                editor.apply();
                             }
+                            ToastUtils.show(LoginActivity.this, "登录成功");
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            //nav_header_button = (ImageButton) ((NavigationView) findViewById(R.id.main_nav)).getHeaderView(0).findViewById(R.id.nav_header_button);
-                            //nav_header_button.setBackground(getResources().getDrawable(R.drawable.tab_book_24dp));
-                            //nav_header_logintxt = (TextView) ((NavigationView) findViewById(R.id.main_nav)).getHeaderView(0).findViewById(R.id.nav_header_logintxt);
-                            //nav_header_logintxt.setVisibility(View.GONE);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, mmessageBean.getErrMsg(), Toast.LENGTH_LONG).show();
+                            ToastUtils.show(LoginActivity.this, "登录失败，用户名或密码错误");
                         }
                     } else {
                         SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(LoginActivity.this, R.string.error));
@@ -194,6 +199,14 @@ public class LoginActivity extends AppCompatActivity {
             };
             BookFlowHttpMethods.getInstance().login(mSubscriber, stuid, encode(password));
         }
+    }
+
+    private void showProgressbar() {
+        loginProgBar.setVisibility(View.VISIBLE);
+    }
+
+    private void closeProgressbar() {
+        loginProgBar.setVisibility(View.GONE);
     }
 }
 

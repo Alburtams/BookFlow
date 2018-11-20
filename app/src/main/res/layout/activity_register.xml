@@ -7,6 +7,14 @@
     android:background="@drawable/login_bg"
     tools:context="com.hust.bookflow.activity.RegisterActivity">
 
+    <ProgressBar
+        android:id="@+id/register_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="69dp"
+        android:visibility="gone" />
     <include layout="@layout/content_register" />
 
 

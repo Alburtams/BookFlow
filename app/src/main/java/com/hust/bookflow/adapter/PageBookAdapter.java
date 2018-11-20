@@ -41,7 +41,7 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_FOOTER) return;
 
-        ((PageBookAdapter.MyViewHolder)holder).item_base_tv_title.setText(mDate.get(position).getBookName());
+        ((PageBookAdapter.MyViewHolder)holder).item_base_tv_title.setText(mDate.get(position).getBook_name());
 
         Glide.with(mContext)
                 .load(mDate.get(position).getPicture())
@@ -53,7 +53,7 @@ public class PageBookAdapter extends BasePagerAdapter<BooksBean> {
                 @Override
                 public void onClick(View view) {
                     int position = holder.getLayoutPosition();
-                    mListener.ItemClickListener(holder.itemView, mDate.get(position).getBookId(),mDate.get(position).getPicture());
+                    mListener.ItemClickListener(holder.itemView, mDate.get(position).getBook_id(),mDate.get(position).getPicture());
                 }
             });
 

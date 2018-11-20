@@ -18,16 +18,11 @@ import android.widget.Spinner;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.adapter.SearchBookAdapter;
-import com.hust.bookflow.adapter.SearchMovieAdapter;
 import com.hust.bookflow.adapter.SpinnerAdapter;
 import com.hust.bookflow.adapter.base.BaseSearchAdapter;
 import com.hust.bookflow.model.bean.BookListBeans;
-import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.bean.SpinnerBean;
-import com.hust.bookflow.model.bean.SubjectsBean;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
-import com.hust.bookflow.model.httputils.BookHttpMethods;
-import com.hust.bookflow.model.httputils.MovieHttpMethods;
 import com.hust.bookflow.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -49,13 +44,13 @@ public class SearchActivity extends AppCompatActivity {
     private int mStart = 0;
     private String q;
 
-    private SearchMovieAdapter mMovieAdapter;
+
     private SearchBookAdapter mBookAdapter;
     private RecyclerView searchrv;
 
     //private Subscriber<List<BooksBean>> moviesub;
     private Subscriber<List<BookListBeans>> booksub;
-    private List<SubjectsBean> mMovieBean;
+
     private List<BookListBeans> mBookBean;
     private RecyclerView.LayoutManager mLayoutManager;
     private View mFootView;
@@ -111,10 +106,10 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(SearchActivity.this)) {
+                if (!recyclerView.canScrollVertically(1) && MyApplication.isNetworkAvailable(SearchActivity.this) && mBookBean.size() == 10) {
                     updateBook();
                     mFootView.setVisibility(View.VISIBLE);
-                    searchrv.scrollToPosition(mMovieAdapter.getItemCount() - 1);
+                    searchrv.scrollToPosition(mBookAdapter.getItemCount() - 1);
                 }
                 super.onScrolled(recyclerView, dx, dy);
             }
@@ -194,11 +189,11 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         };
-        BookFlowHttpMethods.getInstance().getBookByName(booksub, query,0,10);
+        BookFlowHttpMethods.getInstance().getBookByName(booksub, query,0,COUNT);
     }
 
     private void initRecyclerView() {
-        searchfab.setVisibility(View.VISIBLE);
+//        searchfab.setVisibility(View.VISIBLE);
         mBookAdapter = new SearchBookAdapter(this, mBookBean);
         mBookAdapter.setFooterView(mFootView);
         searchrv.setAdapter(mBookAdapter);

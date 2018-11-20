@@ -1,17 +1,20 @@
 package com.google.zxing.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -88,11 +91,17 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
 
     private Subscriber<Boolean> borrowBookSub;
     private Boolean isBorrowedSuc;
+    private Subscriber<Boolean> isBookExistSub;
+
+    private Handler msgHandler;
+    private String scanResult;
+
 
     //	private Button cancelScanButton;
     /**
      * Called when the activity is first created.
      */
+    @SuppressLint("HandlerLeak")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +141,18 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
             ActivityCompat.requestPermissions(CaptureActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
             return;
         }
+
+        msgHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if(msg.arg1 == 1) {
+
+                } else {
+                    ToastUtils.show(CaptureActivity.this, "当前扫描的图书不存在");
+                }
+            }
+        };
 
     }
 
@@ -312,17 +333,46 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
     private void manage(String resultString) {
         if(flag.equals("1")) {
             //首页
-            BookDetailsActivity.toActivity(CaptureActivity.this, resultString, null);
+            toBooks(resultString);
+            scanResult = resultString;
         } else if (flag.equals("2")) {
             //详情
-            borrowBook(bookId, stuId);
-            if (isBorrowedSuc) {
-                ToastUtils.show(this, "借书成功");
+            if (bookId.equals(resultString)) {
+                borrowBook(bookId, stuId);
+                finish();
             } else {
-                ToastUtils.show(this, "借书失败");
+                ToastUtils.show(CaptureActivity.this, "请扫描和要借阅图书相对应的二维码");
             }
         }
-        finish();
+    }
+
+    private void toBooks(final String bookId) {
+        isBookExistSub = new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Message msg = Message.obtain();
+                msg.arg1 = 0;
+                msgHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                Message msg = Message.obtain();
+                msg.arg1 = aBoolean ? 1 : 0;
+                msgHandler.sendMessage(msg);
+                if(aBoolean) {
+                    BookDetailsActivity.toActivity(CaptureActivity.this, bookId, null);
+                    finish();
+                }
+            }
+        };
+
+        BookFlowHttpMethods.getInstance().isBookExist(isBookExistSub, bookId);
     }
 
     private void borrowBook(String bookId, String stuId) {
@@ -334,12 +384,16 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
 
             @Override
             public void onError(Throwable e) {
-                isBorrowedSuc = false;
+                /*Message msg = Message.obtain();
+                msg.arg1 = 0;
+                msgHandler.sendMessage(msg);*/
             }
 
             @Override
             public void onNext(Boolean aBoolean) {
-                isBorrowedSuc = aBoolean;
+                /*Message msg = Message.obtain();
+                msg.arg1 = aBoolean ? 1 : 0;
+                msgHandler.sendMessage(msg);*/
             }
         };
 

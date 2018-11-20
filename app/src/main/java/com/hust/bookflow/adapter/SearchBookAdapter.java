@@ -55,7 +55,7 @@ public class SearchBookAdapter extends BaseSearchAdapter {
 
         ((Holder) holder).item_search_tv2.setText("出版社：" + bean.get(position).getPress());
 
-        //((Holder) holder).item_search_tv3.setText("出版时间：" + bean.get(position).getPress());
+//        ((Holder) holder).item_search_tv3.setText("出版时间：" + bean.get(position).getPress());
         ((Holder) holder).item_search_detail.setVisibility(View.GONE);
         ((Holder) holder).item_search_switch.setVisibility(View.GONE);
 

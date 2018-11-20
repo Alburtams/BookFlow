@@ -1,7 +1,6 @@
 package com.hust.bookflow.model.httputils;
 
 import com.hust.bookflow.bookflowservice.BookFlowService;
-import com.hust.bookflow.doubanservice.DouBanService;
 import com.hust.bookflow.model.bean.BookDetailsBean;
 import com.hust.bookflow.model.bean.BookHttpResult;
 import com.hust.bookflow.model.bean.BookListBeans;
@@ -24,15 +23,14 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.hust.bookflow.model.httputils.BookHttpMethods.BASE_URL_BOOK;
 
 /**
  * Created by 文辉 on 2018/10/20.
  */
 
 public class BookFlowHttpMethods {
-//
-    public static final String BACKEND_BOOK_URL = "http://10.11.33.170:8080/bookcrossing/";
+
+    public static final String BACKEND_BOOK_URL = "http://132.232.199.162:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -60,8 +58,8 @@ public class BookFlowHttpMethods {
         return Holder.BFINSTANCE;
     }
 
-    public void getHomeList(Subscriber<List<BooksBean>> subscriber, int count) {
-        bfService.getHomeList(count)
+    public void getHomeList(Subscriber<List<BooksBean>> subscriber, int start, int count) {
+        bfService.getHomeList(start, count)
                 .map(new HttpResultFunc<List<BooksBean>>())
                 .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
                     @Override
@@ -77,7 +75,7 @@ public class BookFlowHttpMethods {
 
     public void getBookByName(Subscriber<List<BookListBeans>> subscriber, String bookname,int start,int count){
         bfService.searchByName(bookname,start,count)
-                .map(new HttpResultFunc<List<BookListBeans>>())
+                .map(new ListHttpResultFunc<List<BookListBeans>>())
                 .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
                     @Override
                     public List<BookListBeans> call(Throwable throwable) {
@@ -163,6 +161,20 @@ public class BookFlowHttpMethods {
 
     public void returnBook(Subscriber<Boolean> subscriber, String bookId, String stuId) {
         bfService.returnBook(bookId, stuId)
+                .onErrorReturn(new Func1<Throwable, Boolean>() {
+                    @Override
+                    public Boolean call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void isBookExist(Subscriber<Boolean> subscriber, String bookId) {
+        bfService.isBookExist(bookId)
                 .onErrorReturn(new Func1<Throwable, Boolean>() {
                     @Override
                     public Boolean call(Throwable throwable) {

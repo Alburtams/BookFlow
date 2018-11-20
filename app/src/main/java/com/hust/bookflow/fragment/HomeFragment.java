@@ -12,7 +12,6 @@ import com.hust.bookflow.adapter.PageBookAdapter;
 import com.hust.bookflow.fragment.base.BasePagerFragment;
 import com.hust.bookflow.model.bean.BooksBean;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
-import com.hust.bookflow.model.httputils.BookHttpMethods;
 import com.hust.bookflow.utils.CacheUtils;
 import com.hust.bookflow.utils.Constants;
 
@@ -91,7 +90,7 @@ public class HomeFragment extends BasePagerFragment {
             }
         };
 
-        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, RECORD_COUNT);
+        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, mStart, RECORD_COUNT);
     }
 
     @Override
@@ -130,7 +129,7 @@ public class HomeFragment extends BasePagerFragment {
         };
 
 
-        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, RECORD_COUNT);
+        BookFlowHttpMethods.getInstance().getHomeList(mListSubscriber, 0, RECORD_COUNT);
     }
 
 
