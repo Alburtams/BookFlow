@@ -118,6 +118,8 @@ public class BookFlowHttpMethods {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(subscriber);
         }
+    }
+
     public void getlikeList(Subscriber<List<BookListBeans>> subscriber, String stuId){
         bfService.getlikeList(stuId)
                 .map(new ListHttpResultFunc<List<BookListBeans>>())
