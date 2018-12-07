@@ -51,7 +51,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="7dp"
+                        android:padding="2dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         >
@@ -81,16 +81,18 @@
                         android:lines="1"
                         android:ellipsize="end"
                         android:textSize="12sp"
+                        android:text="作者：史铁生"
                         />
 
                     <TextView
                         android:id="@+id/item_back_tv2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
                         android:lines="1"
                         android:ellipsize="end"
                         android:textSize="12sp"
+                        android:text="出版社：人民文学出版社"
                         />
 
                     <LinearLayout
@@ -98,18 +100,18 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <!--<TextView
+                        <TextView
                             android:id="@+id/item_back_tv3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:layout_weight="9"
                             android:lines="1"
                             android:textSize="12sp"
-                            android:text="出版时间：2016-11-1"
+                            android:text="剩余借阅天数：25天"
                             />
 
-                        <ImageView
+                        <!--<ImageView
                             android:id="@+id/item_back_switch"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

@@ -18,7 +18,7 @@ public class Constants {
     public static boolean CHANGELABEL_BOOK = false;
     public static String[] MOVIETITLE = {"爱情", "喜剧", "动画", "科幻", "动作", "经典"};
 
-    public static String[] BOOKTITLE = {"小说", "名著", "科幻", "历史", "爱情", "编程"};
+    public static String[] BOOKTITLE = {"热门图书", "捐书推荐", "今日上新"};
 
     public static String[] LEADERBOARD = {"正在热映", "即将上映", "Top250"};
     public static String[] ALLMOVIE = {

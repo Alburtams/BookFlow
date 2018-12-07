@@ -1,6 +1,7 @@
 package com.hust.bookflow.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -143,6 +146,9 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private SharedPreferences userData;
     private String stuId;
 
+    private Handler msgHandler;
+    private Subscriber<Boolean> canBorrowSub;
+
     public static void toActivity(Activity activity, String id, String img) {
         Intent intent = new Intent(activity, BookDetailsActivity.class);
         intent.putExtra(KEY_BOOK_ID, id);
@@ -227,6 +233,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         return transition;
     }
 
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,6 +259,28 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         initView();
         initData();
         initListener();
+
+        /*msgHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if(msg.arg1 == 1) {
+                    if (stuId.equals("")) {
+                        ToastUtils.show(BookDetailsActivity.this, "请先登录");
+                        LoginActivity.toActivity(BookDetailsActivity.this);
+                    } else {
+                        // TODO 进入扫码界面
+                        startQrCode();
+                        ToastUtils.show(BookDetailsActivity.this, "借书");
+                    }
+                } else if(msg.arg1 == 2) {
+                    ToastUtils.show(BookDetailsActivity.this, "当前可借书籍数量已借完，请先捐书");
+                }
+                else {
+
+                }
+            }
+        };*/
     }
 
     private void initData() {
@@ -503,13 +532,36 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 WebViewActivity.toWebActivity(BookDetailsActivity.this, mBookBean.getAlt(), mBookBean.getTitle());
                 break;*/
             case R.id.book_borrow_btn:
+                // TODO
+                /*canBorrowSub = new Subscriber<Boolean>() {
+                    Message msg = Message.obtain();
+                    @Override
+                    public void onCompleted() {
+                        msg.arg1 = 1;
+                        msgHandler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        msg.arg1 = 1;
+                        msgHandler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        msg.arg1 = 1;
+                        msgHandler.sendMessage(msg);
+                    }
+                };
+
+                BookFlowHttpMethods.getInstance().canBorrow(canBorrowSub, stuId);*/
                 if (stuId.equals("")) {
                     ToastUtils.show(BookDetailsActivity.this, "请先登录");
                     LoginActivity.toActivity(BookDetailsActivity.this);
                 } else {
                     // TODO 进入扫码界面
                     startQrCode();
-                    ToastUtils.show(this, "借书");
+                    ToastUtils.show(this, "可借书数量等于捐书数量，为保证您的借书可用，请先捐赠一定数量的图书");
                 }
                 break;
         }

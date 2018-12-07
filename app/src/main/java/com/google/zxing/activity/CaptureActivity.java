@@ -148,7 +148,10 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
                 super.handleMessage(msg);
                 if(msg.arg1 == 1) {
 
-                } else {
+                } else if(msg.arg1 == 2) {
+                    ToastUtils.show(CaptureActivity.this, "借书成功");
+                }
+                else {
                     ToastUtils.show(CaptureActivity.this, "当前扫描的图书不存在");
                 }
             }
@@ -391,9 +394,9 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
 
             @Override
             public void onNext(Boolean aBoolean) {
-                /*Message msg = Message.obtain();
-                msg.arg1 = aBoolean ? 1 : 0;
-                msgHandler.sendMessage(msg);*/
+                Message msg = Message.obtain();
+                msg.arg1 = aBoolean ? 2 : 0;
+                msgHandler.sendMessage(msg);
             }
         };
 

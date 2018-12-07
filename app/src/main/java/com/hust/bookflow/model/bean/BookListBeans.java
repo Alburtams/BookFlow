@@ -14,6 +14,7 @@ public class BookListBeans {
     private String picture;
     private String author;
     private String press;
+    private int leftDays;
 
     public String getBook_id() {
         return book_id;
@@ -53,5 +54,13 @@ public class BookListBeans {
 
     public void setPress(String press) {
         this.press = press;
+    }
+
+    public int getLeftDays() {
+        return leftDays;
+    }
+
+    public void setLeftDays(int leftDays) {
+        this.leftDays = leftDays;
     }
 }
