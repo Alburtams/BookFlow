@@ -18,6 +18,20 @@ import rx.Observable;
 
 public interface BookFlowService {
 
+    @GET("book/likeList")
+    Observable<BookListHttpResult<List<BookListBeans>>> getlikeList(@Query("stu_id") String stuId);
+
+    @FormUrlEncoded
+    @POST("book/liked")
+    Observable<MessageBean> bookLiked(@Field("stu_id") String stuId, @Field("book_id") String bookId);
+
+    @GET("tagBooks")
+    Observable<BookListHttpResult<List<BookListBeans>>> getTagBooks(@Query("tag_name") String tagName,@Query("start") int start, @Query("count") int count);
+
+    @FormUrlEncoded
+    @POST("book/like")
+    Observable<MessageBean> likeBook(@Field("stu_id") String stuId, @Field("book_id") String bookId);
+
     @FormUrlEncoded
     @POST("user/login")
     Observable<MessageBean> login(@Field("stu_id") String stuId, @Field("passwd") String passwd);

@@ -6,6 +6,7 @@ import com.hust.bookflow.fragment.BookBackFragment;
 import com.hust.bookflow.fragment.BookFragment;
 import com.hust.bookflow.fragment.CollectionFragment;
 import com.hust.bookflow.fragment.HomeFragment;
+import com.hust.bookflow.fragment.TagFragment;
 import com.hust.bookflow.utils.Constants;
 
 /**
@@ -23,8 +24,8 @@ public class FragmentFactory {
             case Constants.BOOKBACK:
                 fragment = new BookBackFragment();
                 break;
-            case Constants.HistoryList:
-
+            case Constants.TAG:
+                fragment = new TagFragment();
                 break;
             case Constants.COLLECTION:
                 fragment = new CollectionFragment();

@@ -53,8 +53,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!pwd.getText().toString().equals(repwd.getText().toString())) {
                     ToastUtils.show(RegisterActivity.this, "两次输入密码不匹配，请确认密码！");
+                }else{
+                    attempRegister();
                 }
-                attempRegister();
             }
         });
     }

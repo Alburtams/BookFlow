@@ -9,7 +9,6 @@ import java.util.List;
 
 public class BookDetailsBean {
 
-//book_id book_name  picture author  book_description  press available location
     private String book_id;
     private String book_name;
     private String picture;
@@ -18,6 +17,15 @@ public class BookDetailsBean {
     private String press;
     private String available; //"0"或"1"
     private String location;
+    private String likeCount;
+
+    public String getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(String likeCount) {
+        this.likeCount = likeCount;
+    }
 
     public String getBook_id() {
         return book_id;

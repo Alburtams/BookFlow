@@ -231,16 +231,19 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 if(title.equals(getString(R.string.string_exit))) {
                     logout();
                 } else {
-                    boolean a = title.equals(R.string.nav_menu_bookToReturn);
-                    boolean b = stuId.equals("");
-                    if(title.equals(getString(R.string.nav_menu_bookToReturn)) && stuId.equals("")) {
+                    if((title.equals(getString(R.string.nav_menu_bookToReturn))||title.equals(getString(R.string.nav_menu_like))) && stuId.equals("")) {
                         ToastUtils.show(MainActivity.this, "请先登录");
                         LoginActivity.toActivity(MainActivity.this);
                     } else {
-                        main_toolbar.setTitle(title);
-                        //根据menu的Title开启Fragment
-
-                        switchFragment(title);
+                        if(title.equals(getString(R.string.nav_menu_like))){
+                            Intent intent=new Intent(MainActivity.this, TagActivity.class);
+                            intent.putExtra("Tag",getString(R.string.nav_menu_like));
+                            startActivity(intent);
+                        }else{
+                            main_toolbar.setTitle(title);
+                            //根据menu的Title开启Fragment
+                            switchFragment(title);
+                        }
                     }
                 }
 
@@ -343,11 +346,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         if (title.equals(Constants.SETTING)) {
             SettingFragment mSettingFragment = new SettingFragment();
             return mSettingFragment;
-        } else {
+        }else {
             Fragment fragment = FragmentFactory.getFragment(title);
             return fragment;
         }
-
 
     }
 

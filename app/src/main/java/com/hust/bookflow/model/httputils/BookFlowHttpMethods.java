@@ -118,6 +118,77 @@ public class BookFlowHttpMethods {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(subscriber);
         }
+    public void getlikeList(Subscriber<List<BookListBeans>> subscriber, String stuId){
+        bfService.getlikeList(stuId)
+                .map(new ListHttpResultFunc<List<BookListBeans>>())
+                .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
+                    @Override
+                    public List<BookListBeans> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void bookLiked(Subscriber<MessageBean> subscriber, String stuID, String bookId){
+        bfService.bookLiked(stuID,bookId)
+                .onErrorReturn(new Func1<Throwable, MessageBean>() {
+                    @Override
+                    public MessageBean call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getTagBooks(Subscriber<List<BookListBeans>> subscriber, String tagName,int start,int count){
+        bfService.getTagBooks(tagName,start,count)
+                .map(new ListHttpResultFunc<List<BookListBeans>>())
+                .onErrorReturn(new Func1<Throwable, List<BookListBeans>>() {
+                    @Override
+                    public List<BookListBeans> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void likeBook(Subscriber<MessageBean> subscriber, String stuID, String bookId){
+        bfService.likeBook(stuID,bookId)
+                .onErrorReturn(new Func1<Throwable, MessageBean>() {
+                    @Override
+                    public MessageBean call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
+    }
+
+    public void getHomeList(Subscriber<List<BooksBean>> subscriber, int start, int count) {
+        bfService.getHomeList(start, count)
+                .map(new HttpResultFunc<List<BooksBean>>())
+                .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
+                    @Override
+                    public List<BooksBean> call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
     }
 
     public void getBookByName(Subscriber<List<BookListBeans>> subscriber, String bookname,int start,int count){
