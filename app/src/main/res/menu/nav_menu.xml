@@ -15,7 +15,18 @@
             android:id="@+id/nav_menu_collection"
             android:checkable="true"
             android:icon="@mipmap/collection"
+            android:visible="false"
             android:title="@string/nav_menu_Collection"/>
+        <item
+            android:id="@+id/nav_menu_tag"
+            android:checkable="true"
+            android:icon="@mipmap/tag"
+            android:title="@string/nav_menu_tag"/>
+        <item
+            android:id="@+id/nav_menu_like"
+            android:checkable="true"
+            android:icon="@mipmap/like_list"
+            android:title="@string/nav_menu_like"/>
         <!--<item
             android:id="@+id/nav_menu_historyList"
             android:checkable="true"

@@ -6,6 +6,8 @@
     <string name="nav_menu_bookToReturn">待还图书</string>
     <string name="nav_menu_historyList">历史借阅</string>
     <string name="nav_menu_Collection">我的收藏</string>
+    <string name="nav_menu_tag">标签分类</string>
+    <string name="nav_menu_like">想看列表</string>
     <string name="nav_menu_system">系统</string>
     <string name="nav_menu_ChangeSection">更改标签</string>
     <string name="nav_menu_Settings">设置</string>
@@ -57,6 +59,8 @@
     <string name="collection_cancel_fail">取消收藏失败!</string>
     <string name="book_detail_borrow">借阅</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="like_success">点赞成功!</string>
+    <string name="like_fail">点赞失败!</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

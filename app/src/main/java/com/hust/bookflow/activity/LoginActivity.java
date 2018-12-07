@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText stuID;
     private EditText mPasswordView;
     private Button mEmailSignInButton;
-    private TextView register_textview;
+    private Button register_button;
     private Subscriber<MessageBean> mSubscriber;
     private MessageBean mmessageBean;
     private CoordinatorLayout atvbookcoorl;
@@ -114,8 +114,8 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-        register_textview = (TextView) findViewById(R.id.register);
-        register_textview.setOnClickListener(new OnClickListener() {
+        register_button = (Button) findViewById(R.id.register_button);
+        register_button.setOnClickListener(new OnClickListener() {
             @Override//点击跳转注册页面
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

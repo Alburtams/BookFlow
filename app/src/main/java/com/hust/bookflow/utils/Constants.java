@@ -12,8 +12,10 @@ public class Constants {
     public static final String BOOKBACK = "待还图书";
     public static final String HistoryList = "历史借阅";
     public static final String COLLECTION = "我的收藏";
+    public static final String TAG = "标签分类";
     public static final String CHANGESECTION = "更改标签";
     public static final String SETTING = "设置";
+    public static final String LIKELIST = "想看列表";
     public static final String LOGOUT = "退出登录";
     public static boolean CHANGELABEL_MOVIE = false;
     public static boolean CHANGELABEL_BOOK = false;

@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -47,6 +48,7 @@ import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.model.bean.BookDetailsBean;
+import com.hust.bookflow.model.bean.MessageBean;
 import com.hust.bookflow.model.db.Book_db;
 import com.hust.bookflow.model.db.GreenDaoUtils;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
@@ -71,6 +73,7 @@ import rx.Subscriber;
 
 import static android.app.ActivityOptions.makeSceneTransitionAnimation;
 import static com.hust.bookflow.R.drawable.collection_false;
+import static com.hust.bookflow.R.drawable.like;
 
 /**
  * Created by ChinaLHR on 2016/12/25.
@@ -110,7 +113,10 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
     private ImageView atv_book_iv_author;
     private ImageView atv_book_iv_list;
     private TextView atv_book_pub;
-
+    private ImageButton want_read_btn;
+    private TextView want_read_count;
+    private Subscriber<MessageBean> mwantSubscriber;
+    private Subscriber<MessageBean> mlikedSubscriber;
 
     private static final String KEY_BOOK_ID = "movie_id";
     private static final String KEY_IMAGE_URL = "image_url";
@@ -198,16 +204,18 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         btdialog_tv = (TextView) findViewById(R.id.btdialog_tv);
 
         book_borrow_btn = (Button) findViewById(R.id.book_borrow_btn);
+        want_read_btn=(ImageButton)findViewById(R.id.want_read_btn);
+        want_read_count=(TextView)findViewById(R.id.want_read_count);
 
         View bottomSheet = findViewById(R.id.btndialog_nes);
         behavior = BottomSheetBehavior.from(bottomSheet);
         //初始化Menu
         Menu menu = atvbooktoolbar.getMenu();
         if (mDaoUtils.queryBook(BookId)) {
-            menu.getItem(0).setIcon(R.drawable.collection_true);
+            menu.getItem(0).setIcon(R.drawable.like_fill);
             isCollection = true;
         } else {
-            menu.getItem(0).setIcon(R.drawable.collection_false);
+            menu.getItem(0).setIcon(R.drawable.like);
             isCollection = false;
         }
 
@@ -266,7 +274,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
             @Override
             public void onError(Throwable e) {
                 atvbookrefresh.setRefreshing(false);
-                SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.error));
+                SnackBarUtils.showSnackBar(atvbookcoorl, "err"+UIUtils.getString(BookDetailsActivity.this, R.string.error));
                 lockCollection = false;
             }
 
@@ -287,7 +295,32 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 
             }
         };
+        mlikedSubscriber=new Subscriber<MessageBean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                SnackBarUtils.showSnackBar(atvbookcoorl, "likederr"+UIUtils.getString(BookDetailsActivity.this, R.string.error));
+            }
+
+            @Override
+            public void onNext(MessageBean messageBean) {
+                if (messageBean != null) {
+                    if(messageBean.getResult()==200){
+                        want_read_btn.setBackground(getResources().getDrawable(R.drawable.like_fill));
+                        want_read_btn.setEnabled(false);
+                    }
+                } else {
+                    SnackBarUtils.showSnackBar(atvbookcoorl, "liked"+UIUtils.getString(BookDetailsActivity.this, R.string.error));
+                }
+
+            }
+        };
         BookFlowHttpMethods.getInstance().getBookDetails(mSubscriber, BookId);
+        BookFlowHttpMethods.getInstance().bookLiked(mlikedSubscriber,stuId,BookId);
     }
 
     /**
@@ -317,7 +350,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                     .into(atvbookiv);
         }
 
-
+        want_read_count.setText(mBookBean.getLikeCount());
         atv_book_title.setText(mBookBean.getBook_name());
         atv_book_author.setText(UIUtils.getString(this, R.string.book_author));
         StringUtils.addViewString(Arrays.asList(mBookBean.getAuthor()), atv_book_author);
@@ -393,7 +426,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                 if (lockCollection) {
 
                     if (isCollection) {
-                        item.setIcon(collection_false);
+                        item.setIcon(like);
                         isCollection = false;
                         boolean b = deleteCollection();
                         if (b) {
@@ -403,7 +436,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                         }
 
                     } else {
-                        item.setIcon(R.drawable.collection_true);
+                        item.setIcon(R.drawable.like_fill);
                         isCollection = true;
                         boolean b = collectionMovie();
                         if (b) {
@@ -448,6 +481,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
 //        atvbookfab.setOnClickListener(this);
 
         book_borrow_btn.setOnClickListener(this);
+        want_read_btn.setOnClickListener(this);
     }
 
     @Override
@@ -510,6 +544,44 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
                     // TODO 进入扫码界面
                     startQrCode();
                     ToastUtils.show(this, "借书");
+                }
+                break;
+            case R.id.want_read_btn:
+                if(stuId.equals("")){
+                    ToastUtils.show(BookDetailsActivity.this, "请先登录");
+                    LoginActivity.toActivity(BookDetailsActivity.this);
+                }else{
+
+                    mwantSubscriber = new Subscriber<MessageBean>() {
+                        @Override
+                        public void onCompleted() {
+                            atvbookrefresh.setRefreshing(false);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            atvbookrefresh.setRefreshing(false);
+                            SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.error));
+                            lockCollection = false;
+                        }
+
+                        @Override
+                        public void onNext(MessageBean messageBean) {
+                            if (messageBean != null) {
+                                if(messageBean.getResult()==200){
+                                    want_read_btn.setBackground(getResources().getDrawable(R.drawable.like_fill));
+                                    want_read_btn.setEnabled(false);
+                                    want_read_count.setText(""+(Integer.valueOf(mBookBean.getLikeCount()).intValue()+1));
+                                    SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.like_success));
+                                }else{
+                                    SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.like_fail));
+                                }
+                            } else {
+                                SnackBarUtils.showSnackBar(atvbookcoorl, UIUtils.getString(BookDetailsActivity.this, R.string.error));
+                            }
+                        }
+                    };
+                    BookFlowHttpMethods.getInstance().likeBook(mwantSubscriber,stuId,BookId);
                 }
                 break;
         }

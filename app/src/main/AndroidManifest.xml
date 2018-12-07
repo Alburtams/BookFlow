@@ -39,6 +39,11 @@
             android:theme="@style/AppTheme_NOTransluce"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".activity.TagActivity"
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme_NOTransluce"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".activity.BookDetailsActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -49,14 +54,6 @@
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="nosensor">
-
-
-            <!--
-            android:parentActivityName=".activity.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.hust.bookflow.activity.MainActivity" />
-            -->
         </activity>
         <activity
             android:name=".activity.ScanDetailsActivity"
