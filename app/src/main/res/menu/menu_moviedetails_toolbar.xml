@@ -8,5 +8,6 @@
         android:id="@+id/action_collection"
         android:icon="@drawable/collection_false"
         android:title="Collection"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:visible="false"/>
 </menu>

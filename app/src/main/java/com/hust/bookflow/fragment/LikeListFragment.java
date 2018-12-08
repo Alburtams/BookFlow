@@ -82,7 +82,7 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
             @Override
             public void onError(Throwable e) {
                 closeProgressbar();
-                ToastUtils.show(getActivity(), "没有搜索到结果");
+                ToastUtils.show(getActivity(), "该分类下还没有图书");
             }
             @Override
             public void onNext(List<BookListBeans> subjectsBeen) {
@@ -90,7 +90,7 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
                     mBookBean = subjectsBeen;
                     initRecyclerView();
                 } else {
-                    ToastUtils.show(getActivity(), "没有搜索到结果");
+                    ToastUtils.show(getActivity(), "该分类下还没有图书");
                 }
             }
         };

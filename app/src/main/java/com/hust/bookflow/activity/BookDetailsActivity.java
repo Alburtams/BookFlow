@@ -217,13 +217,13 @@ public class BookDetailsActivity extends AppCompatActivity implements AppBarLayo
         behavior = BottomSheetBehavior.from(bottomSheet);
         //初始化Menu
         Menu menu = atvbooktoolbar.getMenu();
-        if (mDaoUtils.queryBook(BookId)) {
+        /*if (mDaoUtils.queryBook(BookId)) {
             menu.getItem(0).setIcon(R.drawable.like_fill);
             isCollection = true;
         } else {
             menu.getItem(0).setIcon(R.drawable.like);
             isCollection = false;
-        }
+        }*/
 
         //获取当前登录用户的信息
         userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
