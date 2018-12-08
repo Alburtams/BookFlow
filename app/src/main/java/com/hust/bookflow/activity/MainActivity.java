@@ -42,6 +42,7 @@ import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
 import com.hust.bookflow.fragment.BookFragment;
 import com.hust.bookflow.fragment.HomeFragment;
+import com.hust.bookflow.fragment.LikeListFragment;
 import com.hust.bookflow.fragment.SettingFragment;
 import com.hust.bookflow.fragment.factory.FragmentFactory;
 import com.hust.bookflow.utils.Constant;
@@ -237,6 +238,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                     } else {
                         main_toolbar.setTitle(title);
                         //根据menu的Title开启Fragment
+                        if(title.equals(getString(R.string.nav_menu_like))){
+                            SharedPreferences.Editor editor = userData.edit();
+                            editor.putString("tag", title);
+                            editor.apply();
+                        }
                         switchFragment(title);
                     }
                 }
@@ -270,6 +276,18 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     }
 
+    public void tagFragmentToList(String title){
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.hide(DefaultFragment);
+        SharedPreferences.Editor editor = userData.edit();
+        editor.putString("tag", title);
+        editor.apply();
+        main_toolbar.setTitle(title);
+        Fragment fragment = new LikeListFragment();
+        transaction.add(R.id.main_container, fragment, title);
+        DefaultFragment = fragment;
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -336,6 +354,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      *
      * @param title
      * @return
+     *
      */
     private Fragment createFragmentByTitle(String title) {
         if (title.equals(Constants.SETTING)) {

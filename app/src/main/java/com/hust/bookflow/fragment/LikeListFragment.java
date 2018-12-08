@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +15,8 @@ import android.widget.ProgressBar;
 
 import com.hust.bookflow.R;
 import com.hust.bookflow.activity.BookDetailsActivity;
-import com.hust.bookflow.activity.LoginActivity;
-import com.hust.bookflow.adapter.BookBackAdapter;
+import com.hust.bookflow.adapter.SearchBookAdapter;
+import com.hust.bookflow.adapter.base.BaseSearchAdapter;
 import com.hust.bookflow.fragment.base.BaseFragment;
 import com.hust.bookflow.model.bean.BookListBeans;
 import com.hust.bookflow.model.httputils.BookFlowHttpMethods;
@@ -35,7 +33,7 @@ import rx.Subscriber;
 
 public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private BookBackAdapter likelistAdapter;
+    private SearchBookAdapter likelistAdapter;
     private RecyclerView likelistrv;
 
     private Subscriber<List<BookListBeans>> borrowedBookSub;
@@ -45,6 +43,7 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
     public SwipeRefreshLayout likelistFresh;
     private SharedPreferences userData;
     private String stuId;
+    private String tag;
     private Subscriber<List<BookListBeans>> newBorrowedBookSub;
 
     @Override
@@ -62,12 +61,41 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
         //获取当前登录用户的信息
         userData = getActivity().getSharedPreferences("userInfo", Activity.MODE_PRIVATE);
         stuId= UserUtils.getStuID(userData);
+        tag=userData.getString("tag","");
+        if(tag.equals(getString(R.string.nav_menu_like))){
+            loadData();
+        }else{
+            getTags();
+        }
         initView();
         initListener();
-        loadData();
         return view;
     }
 
+    private void getTags(){
+        showProgressbar();
+        borrowedBookSub = new Subscriber<List<BookListBeans>>() {
+            @Override
+            public void onCompleted() {
+                closeProgressbar();
+            }
+            @Override
+            public void onError(Throwable e) {
+                closeProgressbar();
+                ToastUtils.show(getActivity(), "没有搜索到结果");
+            }
+            @Override
+            public void onNext(List<BookListBeans> subjectsBeen) {
+                if (!subjectsBeen.isEmpty()) {
+                    mBookBean = subjectsBeen;
+                    initRecyclerView();
+                } else {
+                    ToastUtils.show(getActivity(), "没有搜索到结果");
+                }
+            }
+        };
+        BookFlowHttpMethods.getInstance().getTagBooks(borrowedBookSub, tag,0,20);
+    }
 
     private void loadData() {
         showProgressbar();
@@ -97,20 +125,12 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void initRecyclerView() {
-        likelistAdapter = new BookBackAdapter(getActivity(), mBookBean);
+        likelistAdapter = new SearchBookAdapter(getActivity(), mBookBean);
         likelistrv.setAdapter(likelistAdapter);
-        likelistAdapter.setOnItemClickListener(new BookBackAdapter.OnItemClickListener() {
-
+        likelistAdapter.setOnItemClickListener(new BaseSearchAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String id, String url) {
                 BookDetailsActivity.toActivity(getActivity(), id, url);
-            }
-
-            @Override
-            public void onBtnClick(String id) {
-                // TODO
-                //获取当前登录学生学号
-                //backBook(id, stuId); //还书操作
             }
         });
     }

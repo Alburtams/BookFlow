@@ -39,11 +39,6 @@
             android:theme="@style/AppTheme_NOTransluce"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".activity.TagActivity"
-            android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme_NOTransluce"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
             android:name=".activity.BookDetailsActivity"
             android:screenOrientation="nosensor" />
         <activity

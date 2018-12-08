@@ -1,15 +1,17 @@
 package com.hust.bookflow.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hust.bookflow.R;
-import com.hust.bookflow.activity.TagActivity;
+import com.hust.bookflow.activity.MainActivity;
 import com.hust.bookflow.fragment.base.BaseFragment;
 
 /**
@@ -26,9 +28,14 @@ public class TagFragment extends BaseFragment {
     private TextView tag_qcwx;
     private TextView tag_wy;
     private TextView tag_xs;
+
+    private FragmentManager manager;
+    private FragmentTransaction ft;
+    private Toolbar main_toolbar;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        manager = getFragmentManager();
     }
 
     @Nullable
@@ -38,9 +45,7 @@ public class TagFragment extends BaseFragment {
         View.OnClickListener onClickListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), TagActivity.class);
-                intent.putExtra("Tag",((TextView)v).getText());
-                startActivity(intent);
+                switchTag(((TextView)v).getText().toString());
             }
         };
         tag_jy=(TextView) view.findViewById(R.id.tag_jy);
@@ -65,6 +70,10 @@ public class TagFragment extends BaseFragment {
         return view;
     }
 
+    private void switchTag(String title){
+        MainActivity mainActivity=(MainActivity) getActivity();
+        mainActivity.tagFragmentToList(title);
+    }
 
     @Override
     public void onDestroy() {
