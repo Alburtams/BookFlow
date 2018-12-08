@@ -31,8 +31,8 @@ import rx.schedulers.Schedulers;
 
 public class BookFlowHttpMethods {
 
-//    public static final String BACKEND_BOOK_URL = "http://132.232.199.162:8080/bookcrossing/";
-    public static final String BACKEND_BOOK_URL = "http://202.114.6.204:8080/bookcrossing/";
+    public static final String BACKEND_BOOK_URL = "http://132.232.199.162:8080/bookcrossing/";
+//    public static final String BACKEND_BOOK_URL = "http://202.114.6.204:8080/bookcrossing/";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 
@@ -90,7 +90,7 @@ public class BookFlowHttpMethods {
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(subscriber);
-        } else if (tag.equals(Constants.BOOKTITLE[2])) {
+        } /*else if (tag.equals(Constants.BOOKTITLE[2])) {
             // 今日上新
             bfService.getHomeList(start, count)
                     .map(new HttpResultFunc<List<BooksBean>>())
@@ -104,7 +104,7 @@ public class BookFlowHttpMethods {
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(subscriber);
-        } else {
+        }*/ else {
             bfService.getHomeList(start, count)
                     .map(new HttpResultFunc<List<BooksBean>>())
                     .onErrorReturn(new Func1<Throwable, List<BooksBean>>() {
