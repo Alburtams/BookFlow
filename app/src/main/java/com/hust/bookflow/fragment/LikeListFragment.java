@@ -45,6 +45,7 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
     private String stuId;
     private String tag;
     private Subscriber<List<BookListBeans>> newBorrowedBookSub;
+    private Subscriber<List<BookListBeans>> newTagBookSub;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -195,6 +196,40 @@ public class LikeListFragment extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-        updateData();
+        if (tag.equals(getString(R.string.nav_menu_like))){
+            updateData();
+        } else {
+            updateTagData();
+        }
+
+    }
+
+    private void updateTagData() {
+        likelistFresh.setRefreshing(true);
+        newTagBookSub = new Subscriber<List<BookListBeans>>() {
+            @Override
+            public void onCompleted() {
+                likelistFresh.setRefreshing(false);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity(), "更新失败");
+                likelistFresh.setRefreshing(false);
+            }
+
+            @Override
+            public void onNext(List<BookListBeans> bookListBeanses) {
+                if (!bookListBeanses.isEmpty()) {
+                    ToastUtils.show(getActivity(), "更新成功");
+                } else {
+                    ToastUtils.show(getActivity(), "该分类下还没有图书");
+                }
+                mBookBean = bookListBeanses;
+                initRecyclerView();
+            }
+        };
+
+        BookFlowHttpMethods.getInstance().getTagBooks(newTagBookSub, tag,0,20);
     }
 }
