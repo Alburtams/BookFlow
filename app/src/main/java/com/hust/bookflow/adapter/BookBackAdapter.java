@@ -61,6 +61,7 @@ public class BookBackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Holder)holder).item_back_title.setText(mbooks.get(position).getBook_name());
         ((Holder)holder).item_back_tv1.setText("作者：" + mbooks.get(position).getAuthor());
         ((Holder)holder).item_back_tv2.setText("出版社：" + mbooks.get(position).getPress());
+        ((Holder)holder).item_back_tv3.setText("剩余借阅天数：" + mbooks.get(position).getLeftDays() + "天");
 
         if(mListener != null) {
             ((Holder) holder).item_back_card.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +91,7 @@ public class BookBackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public TextView item_back_title;
         public TextView item_back_tv1;
         public TextView item_back_tv2;
-//        public TextView item_back_tv3;
+        public TextView item_back_tv3;
         public Button item_back_btn;
 
         public Holder(View itemView) {
@@ -100,7 +101,7 @@ public class BookBackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             item_back_title = (TextView) itemView.findViewById(R.id.item_back_title);
             item_back_tv1 = (TextView) itemView.findViewById(R.id.item_back_tv1);
             item_back_tv2 = (TextView) itemView.findViewById(R.id.item_back_tv2);
-//            item_back_tv3 = (TextView) itemView.findViewById(R.id.item_back_tv3);
+            item_back_tv3 = (TextView) itemView.findViewById(R.id.item_back_tv3);
             item_back_btn = (Button) itemView.findViewById(R.id.book_back_btn);
         }
     }

@@ -44,6 +44,18 @@ public interface BookFlowService {
     @GET("list")
     Observable<HomeHttpResult<List<BooksBean>>> getHomeList(@Query("start") int start, @Query("count") int count);
 
+    // 首页图书列表
+    @GET("hotlist")
+    Observable<HomeHttpResult<List<BooksBean>>> getHotList(@Query("start") int start, @Query("count") int count);
+
+    // 首页图书列表
+    @GET("needlist")
+    Observable<HomeHttpResult<List<BooksBean>>> getNeedList(@Query("start") int start, @Query("count") int count);
+
+    // 首页图书列表
+    @GET("todaylist")
+    Observable<HomeHttpResult<List<BooksBean>>> getTodayList(@Query("start") int start, @Query("count") int count);
+
     // 图书详情
     @GET("book")
     Observable<BookDetailsBean> getBookDetails(@Query("book_id") String bookId);
@@ -66,4 +78,6 @@ public interface BookFlowService {
     @GET("book_exist")
     Observable<Boolean> isBookExist(@Query("book_id") String bookId);
 
+    @GET("can_borrow")
+    Observable<Boolean> canBorrow(@Query("stu_id") String stuId);
 }

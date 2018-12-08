@@ -3,6 +3,7 @@ package com.hust.bookflow.fragment.factory;
 import android.support.v4.app.Fragment;
 
 import com.hust.bookflow.fragment.BookBackFragment;
+import com.hust.bookflow.fragment.BookFragment;
 import com.hust.bookflow.fragment.CollectionFragment;
 import com.hust.bookflow.fragment.HomeFragment;
 import com.hust.bookflow.fragment.LikeListFragment;
@@ -19,7 +20,7 @@ public class FragmentFactory {
         Fragment fragment = null;
         switch (title) {
             case Constants.HOME:
-                fragment = new HomeFragment();
+                fragment = new BookFragment();
                 break;
             case Constants.BOOKBACK:
                 fragment = new BookBackFragment();

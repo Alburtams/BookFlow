@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.google.zxing.activity.CaptureActivity;
 import com.hust.bookflow.MyApplication;
 import com.hust.bookflow.R;
+import com.hust.bookflow.fragment.BookFragment;
 import com.hust.bookflow.fragment.HomeFragment;
 import com.hust.bookflow.fragment.SettingFragment;
 import com.hust.bookflow.fragment.factory.FragmentFactory;
@@ -180,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         mFragmentManager = getSupportFragmentManager();
         DefaultFragment = mFragmentManager.findFragmentByTag(title);
         if (DefaultFragment == null) {
-            Fragment homeFragment = new HomeFragment();
+            Fragment homeFragment = new BookFragment();
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.main_container, homeFragment, title)
