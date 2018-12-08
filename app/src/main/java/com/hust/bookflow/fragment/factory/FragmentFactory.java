@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import com.hust.bookflow.fragment.BookBackFragment;
 import com.hust.bookflow.fragment.CollectionFragment;
 import com.hust.bookflow.fragment.HomeFragment;
+import com.hust.bookflow.fragment.LikeListFragment;
 import com.hust.bookflow.fragment.TagFragment;
 import com.hust.bookflow.utils.Constants;
 
@@ -29,8 +30,8 @@ public class FragmentFactory {
             case Constants.COLLECTION:
                 fragment = new CollectionFragment();
                 break;
-            case Constants.CHANGESECTION:
-
+            case Constants.LIKELIST:
+                fragment=new LikeListFragment();
                 break;
         }
         return fragment;

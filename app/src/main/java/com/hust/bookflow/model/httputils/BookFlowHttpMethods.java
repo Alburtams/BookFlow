@@ -30,7 +30,7 @@ import rx.schedulers.Schedulers;
 
 public class BookFlowHttpMethods {
 //http://132.232.199.162:8080/bookcrossing/
-    public static final String BACKEND_BOOK_URL = "http://202.114.6.107:8080/bookcrossing/";
+    public static final String BACKEND_BOOK_URL = "http://132.232.199.162:8080/bookcrossing";
     private BookFlowService bfService;
     private Retrofit bookRetrofit;
 

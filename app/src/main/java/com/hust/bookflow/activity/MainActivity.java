@@ -55,7 +55,7 @@ import com.hust.bookflow.utils.jsoupUtils.GetNavImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener  {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, View.OnClickListener {
 
     private NavigationView mainnav;
     private android.support.v4.widget.DrawerLayout maindrawerlayout;
@@ -140,14 +140,14 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         headerView = mainnav.getHeaderView(0);
         nav_header_img = (ImageView) headerView.findViewById(R.id.nav_header_img);
         nav_header_title = (TextView) headerView.findViewById(R.id.nav_header_title);
-        nav_header_button=(ImageButton)headerView.findViewById(R.id.nav_header_button);
+        nav_header_button = (ImageButton) headerView.findViewById(R.id.nav_header_button);
         nav_header_logintxt = (TextView) headerView.findViewById(R.id.nav_header_logintxt);
 
         nav_header_logout = mainnav.getMenu().findItem(R.id.nav_menu_exit);
 
         nav_header_button.setOnClickListener(this);
 
-        userData = getSharedPreferences("userInfo",  Activity.MODE_PRIVATE);
+        userData = getSharedPreferences("userInfo", Activity.MODE_PRIVATE);
         stuId = UserUtils.getStuID(userData);
         if (!stuId.equals("")) {
             nav_header_button.setEnabled(false);
@@ -227,22 +227,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 menuItem.setChecked(true);
                 maindrawerlayout.closeDrawers();
                 String title = (String) menuItem.getTitle();
-                if(title.equals(getString(R.string.string_exit))) {
+                if (title.equals(getString(R.string.string_exit))) {
                     logout();
                 } else {
-                    if((title.equals(getString(R.string.nav_menu_bookToReturn))||title.equals(getString(R.string.nav_menu_like))) && stuId.equals("")) {
+                    if ((title.equals(getString(R.string.nav_menu_bookToReturn)) || title.equals(getString(R.string.nav_menu_like))) && stuId.equals("")) {
                         ToastUtils.show(MainActivity.this, "请先登录");
                         LoginActivity.toActivity(MainActivity.this);
                     } else {
-                        if(title.equals(getString(R.string.nav_menu_like))){
-                            Intent intent=new Intent(MainActivity.this, TagActivity.class);
-                            intent.putExtra("Tag",getString(R.string.nav_menu_like));
-                            startActivity(intent);
-                        }else{
-                            main_toolbar.setTitle(title);
-                            //根据menu的Title开启Fragment
-                            switchFragment(title);
-                        }
+                        main_toolbar.setTitle(title);
+                        //根据menu的Title开启Fragment
+                        switchFragment(title);
                     }
                 }
 
@@ -302,10 +296,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
         // 二维码扫码
         Bundle bundle = new Bundle();
-        bundle.putString("flag","1");
+        bundle.putString("flag", "1");
         Intent intent = new Intent(MainActivity.this, CaptureActivity.class).putExtras(bundle);
         startActivity(intent);
     }
+
     /**
      * Toolbar menu点击事件
      *
@@ -345,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         if (title.equals(Constants.SETTING)) {
             SettingFragment mSettingFragment = new SettingFragment();
             return mSettingFragment;
-        }else {
+        } else {
             Fragment fragment = FragmentFactory.getFragment(title);
             return fragment;
         }
@@ -417,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         super.onPause();
     }
 
-    class mAsyncTask extends AsyncTask<Void,Void,List<String>> {
+    class mAsyncTask extends AsyncTask<Void, Void, List<String>> {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected void onPostExecute(List<String> list) {

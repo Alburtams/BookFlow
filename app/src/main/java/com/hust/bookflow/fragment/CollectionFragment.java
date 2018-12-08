@@ -1,5 +1,7 @@
 package com.hust.bookflow.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -15,6 +17,7 @@ import com.hust.bookflow.R;
 import com.hust.bookflow.fragment.base.BaseFragment;
 import com.hust.bookflow.fragment.pagerfragment.CollectionPageFragment;
 import com.hust.bookflow.utils.Constants;
+import com.hust.bookflow.utils.UserUtils;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -39,7 +42,6 @@ public class CollectionFragment extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_collection, container, false);
         collection_vp = (ViewPager) view.findViewById(R.id.collection_vp);
         collection_tab = (BottomBar) view.findViewById(R.id.collection_tab);
