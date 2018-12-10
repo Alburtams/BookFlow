@@ -15,7 +15,7 @@ public class Constants {
     public static final String TAG = "标签分类";
     public static final String CHANGESECTION = "更改标签";
     public static final String SETTING = "设置";
-    public static final String LIKELIST = "想看列表";
+    public static final String LIKELIST = "我的想看";
     public static final String LOGOUT = "退出登录";
     public static boolean CHANGELABEL_MOVIE = false;
     public static boolean CHANGELABEL_BOOK = false;
